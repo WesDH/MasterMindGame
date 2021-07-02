@@ -1,0 +1,73 @@
+body {
+    padding: 10px 10px;
+}
+
+#game-container{
+    display: flex;
+    background: greenyellow;
+    flex-direction: column-reverse;
+    width: 40%;
+    height: 90vh;
+    flex-wrap: wrap;
+    justify-content: start;
+}
+
+#left-game-panel{
+    background: darkgoldenrod;
+    flex-basis: 100%;
+    flex-direction: column;
+    height: 100%;
+    width: 20%;
+    display: flex;
+    flex: 1 0 auto;
+    border: 1px solid black;
+}
+
+div[turn_number]{
+    display: flex;
+    flex: 1 1 auto;
+    width: 60%;
+    border: 1px solid black;
+    flex-wrap: nowrap;
+
+}
+
+div[turn_number]:nth-of-type(odd) {
+    background-image: url("images/wood_texture_2.jpg");
+}
+
+div[turn_number]:nth-of-type(even) {
+    background-image: url("images/wood_texture_1.jpg");
+}
+
+#key-panel{
+    display: flex;
+    flex: 0 0 auto;
+    background: maroon;
+    flex-direction: row;
+    height: 50px;
+    width: 60%;
+    border: 1px solid black;
+}
+
+#right-game-panel{
+    display: flex;
+    flex: 1 0 auto;
+    background: darkgoldenrod;
+    flex-basis: 100%;
+    flex-direction: column-reverse;
+    height: 100%;
+    width: 20%;
+    border: 1px solid black;
+}
+
+div[color]{
+    display: flex;
+    margin: 10px 10px;
+    width: 25%;
+    height: 25px;
+    /*background: red;*/
+    border: 1px solid black;
+    background-repeat: no-repeat;
+    background-size: auto;
+}
