@@ -1,3 +1,5 @@
+(A work in progress)
+
 MasterMind, a puzzle solving game in development for summer 2021.
 
 Instructions: There are 4 randomly chosen colors on the top row (hidden).
