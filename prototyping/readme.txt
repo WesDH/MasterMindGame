@@ -1,1 +1,1 @@
-Outlining a visual product prototype before proceeding with implementation during SCRUM sprint.
+A visual mock-up of the product prototype during SCRUM Sprint #2.
