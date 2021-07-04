@@ -1,0 +1,1 @@
+Outlining a visual product prototype before proceeding with implementation.
