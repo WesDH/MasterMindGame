@@ -1,1 +1,1 @@
-Outlining a visual product prototype before proceeding with implementation.
+Outlining a visual product prototype before proceeding with implementation during SCRUM sprint.
