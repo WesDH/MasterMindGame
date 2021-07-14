@@ -6,7 +6,7 @@ body {
     display: flex;
     background: greenyellow;
     flex-direction: column-reverse;
-    width: 40%;
+    width: 100%;
     height: 90vh;
     flex-wrap: wrap;
     justify-content: start;
@@ -23,20 +23,21 @@ body {
     border: 1px solid black;
 }
 
-div[turn_number]{
+div[row_number]{
     display: flex;
     flex: 1 1 auto;
     width: 60%;
-    border: 1px solid black;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+    border-left: 1px solid black;
     flex-wrap: nowrap;
-
 }
 
-div[turn_number]:nth-of-type(odd) {
+div[row_number]:nth-of-type(odd) {
     background-image: url("images/wood_texture_2.jpg");
 }
 
-div[turn_number]:nth-of-type(even) {
+div[row_number]:nth-of-type(even) {
     background-image: url("images/wood_texture_1.jpg");
 }
 
@@ -45,7 +46,7 @@ div[turn_number]:nth-of-type(even) {
     flex: 0 0 auto;
     background: maroon;
     flex-direction: row;
-    height: 50px;
+    height: 10%;
     width: 60%;
     border: 1px solid black;
 }
@@ -70,4 +71,23 @@ div[color]{
     border: 1px solid black;
     background-repeat: no-repeat;
     background-size: auto;
+}
+
+div[arrow] {
+    display: flex;
+    max-width: 16%;
+    min-width: 16%;
+}
+
+div[piece_number] {
+    background-color: rgba(0, 255, 180, 0.2);
+    border-left: 1px solid black;
+    width: 16%;
+}
+
+div[peg_placement_area] {
+    background-color: rgba(0, 0, 180, 0.2);
+    border-left: 1px solid black;
+    max-width: 17%;
+    min-width: 17%;
 }

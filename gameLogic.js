@@ -1,8 +1,8 @@
 let PIECES = 6;  // Planned option to increase/decrease this later to change difficulty (MAX colors: 10)
 let TURNS = 10;  // Planned option to increase/decrease this later to change difficulty
 let game_state = "unfinished";
-let colors = [null, 'red', 'green', 'blue', 'orange', 'violet', 'yellow', 'darkgreen', 'pink', 'aqua', 'ruby']
-let turn = 1
+let current_turn = 1;
+let colors = ['DeNada', 'red', 'green', 'blue', 'orange', 'violet', 'yellow', 'square', 'diamond', 'asterisk', 'cross']
 
 window.addEventListener('DOMContentLoaded', (event) => {
     console.log('DOM fully loaded and parsed');
@@ -19,19 +19,21 @@ function init_game_board() {
     game_container.appendChild(left_game_panel)
     game_container.children[0].id = "left-game-panel";
 
-    // Create the game piece containers. 5 containers for each of the 36 game squares.
+    // Create the game guessing rows, number of rows drawn equals number of TURNS player selected
     for (let row = 1; row <= TURNS; row++) {
         let game_row = document.createElement("div");
         let game_container = document.getElementById("game-container");
         game_container.appendChild(game_row)
-        game_container.children[row].setAttribute('turn_number', `${row}`)
-        for (let col = 1; col < 6; col++) {
-            if (col == 5) {
-                //let game_piece = document.createElement("div");
-            } else {
-                //
-            }
-        }
+        game_container.children[row].setAttribute('row_number', `${row}`)
+
+
+        // the game row area gets 90% (key panel already takes 10%), then divide this 90% by # of TURNS.
+        // Prevents a row from growing too tall relative to the other rows.
+        let row_height = 90 / TURNS
+        game_container.children[row].style.maxHeight = `${row_height}%`
+
+        draw_game_row_elements(row)
+
     }
 
     // let all_game_rows = document.querySelectorAll('[turn_number]')
@@ -55,6 +57,47 @@ function init_game_board() {
     // Draw the selectable game pieces on the left column:
     draw_piece_choices()
     gen_win_pieces()
+}
+
+// Initialize each game row's child elements:
+// Each game row consists of:
+// - Current turn arrow indicator
+// - Four user game piece placement spots
+// - Four small feed back peg squares
+function draw_game_row_elements(row) {
+    let row_string = row.toString();
+    let cur_game_row = document.querySelectorAll(`[row_number=${CSS.escape(row_string)}]`);
+    for (let col = 1; col <= 6; col++) {
+        if (col === 1) {
+            let green_arrow_area = document.createElement("div");
+            cur_game_row[0].appendChild(green_arrow_area)
+            let green_arrow = cur_game_row[0].querySelectorAll("div");
+            green_arrow[0].setAttribute("arrow", "green");
+            green_arrow[0].setAttribute("t_number", `${row}`);
+            if (col == 1 && row == 1) {
+                //green_arrow[0].setAttribute("hidden", "false");
+                green_arrow[0].style.background = "no-repeat url('images/green_arrow.png') center";
+            } else {
+                //green_arrow[0].setAttribute("null", "");
+                green_arrow[0].innerHTML = ""
+            }
+
+        } else if (col == 6) {
+            // create the 4 peg areas
+            let piece_placement_area = document.createElement("div");
+            cur_game_row[0].appendChild(piece_placement_area)
+            let cur_piece_area = cur_game_row[0].querySelectorAll("div");
+            cur_piece_area[col-1].setAttribute("peg_placement_area", `${col - 1}`);
+            //cur_piece_area[col-1].setAttribute("turn_number", `${col}`);
+        } else {
+            // Create the four game piece placement areas
+            let piece_placement_area = document.createElement("div");
+            cur_game_row[0].appendChild(piece_placement_area)
+            let cur_piece_area = cur_game_row[0].querySelectorAll("div");
+            cur_piece_area[col-1].setAttribute("piece_number", `${col - 1}`);
+            cur_piece_area[col-1].setAttribute("t_number", `${row}`);
+        }
+    }
 }
 
 // Draw the pieces that the player can select from the panel and place on the guess area
@@ -97,10 +140,12 @@ function gen_win_pieces(){
 // Function to listen for and to handle mouse and keyboard events.
 function standby_game() {
     document.getElementById('left-game-panel').addEventListener("click", function(event) {
-        console.dir(event.target.getAttribute('color'));  // use this in chrome
+        //console.dir(event.target.getAttribute('color'));  // use this in chrome
         //console.log(event.target);
         let possible_color = event.target.getAttribute('color')
-        let colors = [null, 'red', 'green', 'blue', 'orange', 'violet', 'yellow', 'darkgreen', 'pink', 'aqua', 'ruby']
+
+        let colors = ['DeNada', 'red', 'green', 'blue', 'orange', 'violet', 'yellow', 'square', 'diamond', 'asterisk', 'cross']
+
 
         if (colors.includes(possible_color)){
             document.body.style.cursor = `url('images/gp_${possible_color}.png'), pointer`
