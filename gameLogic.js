@@ -1,24 +1,28 @@
+// Define GLOBAL scope variables:
 let PIECES = 6;  // Planned option to increase/decrease this later to change difficulty (MAX colors: 10)
 let TURNS = 10;  // Planned option to increase/decrease this later to change difficulty
 let game_state = "unfinished";
 let current_turn = 1;
 let colors = ['DeNada', 'red', 'green', 'blue', 'orange', 'violet', 'yellow', 'square', 'diamond', 'asterisk', 'cross']
+// End GLOBAL variable definitions
+
 
 window.addEventListener('DOMContentLoaded', (event) => {
     console.log('DOM fully loaded and parsed');
-
     init_game_board()
-
     standby_game()
 });
 
 // Function to draw the base game board.
 function init_game_board() {
+
+    // [Left column placement]
     let left_game_panel = document.createElement("div");
     let game_container = document.getElementById("game-container");
     game_container.appendChild(left_game_panel)
     game_container.children[0].id = "left-game-panel";
 
+    // [Center column placement]:
     // Create the game guessing rows, number of rows drawn equals number of TURNS player selected
     for (let row = 1; row <= TURNS; row++) {
         let game_row = document.createElement("div");
@@ -31,7 +35,7 @@ function init_game_board() {
         let row_height = 90 / TURNS
         game_container.children[row].style.maxHeight = `${row_height}%`
 
-        // Initialize the individual elements for each row
+        // Initialize the individual sub-elements for each row:
         draw_game_row_elements(row)
     }
 
@@ -45,11 +49,14 @@ function init_game_board() {
     //     let testvar = 123123
     // });
 
-    // The center column of game_container will fill to 100% with key_panel and guess rows
+    // [Center column placement]:
+    // The center column of game_container will fill to 100% with key_panel
+    // and already placed game guessing rows:
     let key_panel = document.createElement("div");
     game_container.appendChild(key_panel);
     game_container.children[TURNS + 1].id = "key-panel";
 
+    // [Right column placement]
     // This will display on a new "rightmost" column based on CSS filling center column already
     let right_game_panel = document.createElement("div");
     game_container.appendChild(right_game_panel);
@@ -115,7 +122,7 @@ function draw_piece_choices() {
         let piece_div = document.createElement("div");
         left_panel.appendChild(piece_div)
         left_panel.children[piece].setAttribute("color", `${colors[piece]}`)
-        left_panel.children[piece].style.backgroundImage = `url('images/gp_${colors[piece]}.png')`;
+        left_panel.children[piece].style.backgroundImage = `url('images/${colors[piece]}.png')`;
     }
 }
 
@@ -134,7 +141,7 @@ function gen_win_pieces(){
         let div_placeholder = document.createElement("div");
 
         key_panel.appendChild(div_placeholder).setAttribute("color", `${colors[rand_piece]}`);
-        key_panel.children[choice].style.backgroundImage = `url('images/gp_${colors[rand_piece]}.png')`;
+        key_panel.children[choice].style.backgroundImage = `url('images/${colors[rand_piece]}.png')`;
 
     }
 }
@@ -150,17 +157,69 @@ function standby_game() {
 
 
         if (colors.includes(possible_color)){
-            document.body.style.cursor = `url('images/gp_${possible_color}.png'), pointer`
+            document.body.style.cursor = `url('images/${possible_color}.png'), pointer`
         }
     });
-
-
 
     window.addEventListener("keydown", function(event) {
         if (`${event.code}` == "Escape"){
             document.body.style.cursor = ""
         }
     }, true);
+
+    listen_gameboard()
+}
+
+
+function listen_gameboard(){
+    let str_turn = current_turn.toString()
+    let all_pieces = document.querySelectorAll('[p_num]')
+    all_pieces.forEach((element) => {
+        element.addEventListener('mousedown', function(event) {
+            //console.dir(event.target.getAttribute('color'));  // use this in chrome
+
+
+            if (event.target.getAttribute('t_num') == str_turn
+                && document.body.style.cursor !== ""){
+                console.log(event.target);
+                console.log("p_num: ",event.target.getAttribute('p_num'));
+                console.log("t_num: ", event.target.getAttribute('t_num'));
+                console.log("success");
+
+                let gp_color = parse_pointer_name(document.body.style.cursor)
+
+                event.target.style.background = `no-repeat url('images/${gp_color}.png') center`;
+                event.target.setAttribute('color_choice', `${gp_color}`)
+            } else if (event.target.getAttribute('t_num') == str_turn
+                && document.body.style.cursor === "") {
+                console.log("remove piece request")
+                event.target.style.background = ``;
+                event.target.setAttribute('color_choice', "")
+            }
+
+        });
+    });
+
+    function parse_pointer_name(str_cursor) {
+        let string = ""
+        let write = false
+
+        for (let i = 0; i < str_cursor.length; i++) {
+            if (str_cursor[i] === '/') {
+                write = true
+                continue;
+            }
+            if (str_cursor[i] === '.') {
+                write = false
+                break;
+            }
+            if (write === true){
+                string += str_cursor[i]
+            }
+        }
+
+        return string
+    }
 }
 
 
