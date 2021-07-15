@@ -65,6 +65,7 @@ function init_game_board() {
     // Draw the selectable game pieces on the left column:
     draw_piece_choices()
     gen_win_pieces()
+    init_right_panel_elements()
 }
 
 // Initialize each game row's child elements:
@@ -109,11 +110,15 @@ function draw_game_row_elements(row) {
     }
 }
 
-// Draw the pieces that the player can select from the panel and place on the guess area
+// Draw the pieces that the player can select from the LEFT panel and place on the guess area
 function draw_piece_choices() {
 
-
     let left_panel = document.getElementById("left-game-panel");
+
+    let section_padder = document.createElement("section");
+    section_padder.id = 'L_panel_top_padding';
+    left_panel.appendChild(section_padder);
+
     let piece_div = document.createElement("div");
     left_panel.appendChild(piece_div) // create an empty div so index 0 is ignored, game piece colors start at index 1
     //left_panel.children[0].style.height = "5vh"
@@ -122,7 +127,9 @@ function draw_piece_choices() {
         let piece_div = document.createElement("div");
         left_panel.appendChild(piece_div)
         left_panel.children[piece].setAttribute("color", `${colors[piece]}`)
-        left_panel.children[piece].style.backgroundImage = `url('images/${colors[piece]}.png')`;
+        left_panel.children[piece].style.background = `url('images/${colors[piece]}.png') center no-repeat`;
+        left_panel.children[piece].setAttribute('title', `Pick up ${colors[piece]} game-piece`);
+        left_panel.children[piece].style.backgroundSize = "75%";
     }
 }
 
@@ -171,14 +178,38 @@ function standby_game() {
 }
 
 
+
+// Draws the right panel items
+// - "Submit" guess button
+// - TODO Game piece buttons to send direct to guess area
+function init_right_panel_elements() {
+    let r_panel = document.getElementById('right-game-panel')
+
+
+    // Column reverse ordering at this time has priority on the CSS:
+    // Create the submit button
+    let div1 = document.createElement("div")
+    div1.id = "submit_btn"
+    div1.setAttribute('color', 'green');
+    div1.setAttribute('title', 'Submit your guess!');
+    div1.innerText = "Guess!"
+    r_panel.appendChild(div1)
+
+    // Create a container to hold the color buttons on the right panel
+    let clr_btn_ctnr = document.createElement("div")
+    clr_btn_ctnr.id = "color_btn_container"
+    r_panel.appendChild(clr_btn_ctnr)
+
+
+}
+
+
 function listen_gameboard(){
     let str_turn = current_turn.toString()
     let all_pieces = document.querySelectorAll('[p_num]')
     all_pieces.forEach((element) => {
         element.addEventListener('mousedown', function(event) {
             //console.dir(event.target.getAttribute('color'));  // use this in chrome
-
-
             if (event.target.getAttribute('t_num') == str_turn
                 && document.body.style.cursor !== ""){
                 console.log(event.target);
@@ -186,9 +217,12 @@ function listen_gameboard(){
                 console.log("t_num: ", event.target.getAttribute('t_num'));
                 console.log("success");
 
+                // Grab the current pointer color from the cursor info
                 let gp_color = parse_pointer_name(document.body.style.cursor)
 
+                // Place the selected game piece on the guess row:
                 event.target.style.background = `no-repeat url('images/${gp_color}.png') center`;
+                event.target.style.backgroundSize = "50% 50%";
                 event.target.setAttribute('color_choice', `${gp_color}`)
             } else if (event.target.getAttribute('t_num') == str_turn
                 && document.body.style.cursor === "") {
@@ -196,30 +230,26 @@ function listen_gameboard(){
                 event.target.style.background = ``;
                 event.target.setAttribute('color_choice', "")
             }
-
         });
     });
+}
 
-    function parse_pointer_name(str_cursor) {
-        let string = ""
-        let write = false
-
-        for (let i = 0; i < str_cursor.length; i++) {
-            if (str_cursor[i] === '/') {
-                write = true
-                continue;
-            }
-            if (str_cursor[i] === '.') {
-                write = false
-                break;
-            }
-            if (write === true){
-                string += str_cursor[i]
-            }
+// This function only returns the "color" string in the cursor options
+function parse_pointer_name(str_cursor) {
+    let string = ""
+    let write = false
+    for (let i = 0; i < str_cursor.length; i++) {
+        if (str_cursor[i] === '/') {
+            write = true
+            continue;
+        } else if (str_cursor[i] === '.') {
+            write = false
+            break;
+        } else if (write === true){
+            string += str_cursor[i]
         }
-
-        return string
     }
+    return string
 }
 
 

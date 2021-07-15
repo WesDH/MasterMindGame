@@ -14,16 +14,29 @@ body {
 
 #left-game-panel{
     /*background: darkgoldenrod;*/
-    background-image: url("images/slate_texture_1.jpg");
-    flex-basis: 100%;
-    flex-direction: column;
-    height: 100%;
-    width: 20%;
+
     display: flex;
     flex: 1 0 auto;
+    flex-direction: column;
+
+    background-image: url("images/slate_texture_1.jpg");
+    /*flex-basis: 100%; */
+
+    justify-content: start;  /*This and align-items may be reversed due to column flex direction*/
+    align-items: center;
+
+    height: 100%;
+    width: 20%;
+
+
     border: 1px solid black;
     border-bottom-left-radius: 50px;
     border-top-left-radius: 50px;
+}
+
+/* This will push the game pieces on the left panel down further */
+#L_panel_top_padding {
+    height: 5%;
 }
 
 div[row_number]{
@@ -56,8 +69,12 @@ div[row_number]:nth-of-type(even) {
 
 #right-game-panel{
     display: flex;
-    flex: 1 0 auto;
+    justify-content: space-between;  /*This and align-items may be reversed due to column flex direction*/
+    align-items: center;
+    flex: 1 1 50%; /*This combination prevents the container growing to tall with padding added */
     background-image: url("images/slate_texture_1.jpg");
+    padding-top: 5%;
+    padding-bottom: 5%;
     /*background: darkgoldenrod;*/
     flex-basis: 100%;
     flex-direction: column-reverse;
@@ -70,9 +87,10 @@ div[row_number]:nth-of-type(even) {
 
 div[color]{
     display: flex;
-    margin: 20px 10px; /*FIXTHIS scaling later*/
+    /*margin: 20px 10px; FIXTHIS scaling later*/
+    margin: 0.2em;
     width: 25%;
-    height: 25px;
+    height: 5vh;
     /*background: red;*/
     border: 1px solid black;
     background-repeat: no-repeat;
@@ -96,4 +114,40 @@ div[peg_placement_area] {
     border-left: 1px solid black;
     max-width: 17%;
     min-width: 17%;
+}
+
+#color_btn_container {
+    width: 75%;
+    height: 75%;
+    border: 1px dotted black;
+}
+
+
+#submit_btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.2vw;
+    color: #62ff25;
+    background: darkgreen;
+    border: 1px solid black;
+    width: 50%;
+    height: 5%;
+}
+
+/* ID submit_btn, but only when element's attribute color = green */
+#submit_btn[color=green]:hover {;
+    border: 1px dotted #62ff25;
+}
+
+#submit_btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.2vw;
+    color: #62ff25;
+    background: darkgreen;
+    border: 1px solid black;
+    width: 50%;
+    height: 5%;
 }
