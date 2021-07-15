@@ -4,7 +4,7 @@ body {
 
 #game-container{
     display: flex;
-    background: greenyellow;
+    background: bisque;
     flex-direction: column-reverse;
     width: 100%;
     height: 90vh;
@@ -13,7 +13,8 @@ body {
 }
 
 #left-game-panel{
-    background: darkgoldenrod;
+    /*background: darkgoldenrod;*/
+    background-image: url("images/slate_texture_1.jpg");
     flex-basis: 100%;
     flex-direction: column;
     height: 100%;
@@ -21,6 +22,8 @@ body {
     display: flex;
     flex: 1 0 auto;
     border: 1px solid black;
+    border-bottom-left-radius: 50px;
+    border-top-left-radius: 50px;
 }
 
 div[row_number]{
@@ -54,17 +57,20 @@ div[row_number]:nth-of-type(even) {
 #right-game-panel{
     display: flex;
     flex: 1 0 auto;
-    background: darkgoldenrod;
+    background-image: url("images/slate_texture_1.jpg");
+    /*background: darkgoldenrod;*/
     flex-basis: 100%;
     flex-direction: column-reverse;
     height: 100%;
     width: 20%;
     border: 1px solid black;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
 }
 
 div[color]{
     display: flex;
-    margin: 10px 10px;
+    margin: 20px 10px; /*FIXTHIS scaling later*/
     width: 25%;
     height: 25px;
     /*background: red;*/
@@ -79,14 +85,14 @@ div[arrow] {
     min-width: 16%;
 }
 
-div[piece_number] {
-    background-color: rgba(0, 255, 180, 0.2);
+div[p_num] {
+    background-color: rgba(0, 255, 180, 0.06);
     border-left: 1px solid black;
     width: 16%;
 }
 
 div[peg_placement_area] {
-    background-color: rgba(0, 0, 180, 0.2);
+    background-color: rgba(0, 0, 255, 0.06);
     border-left: 1px solid black;
     max-width: 17%;
     min-width: 17%;

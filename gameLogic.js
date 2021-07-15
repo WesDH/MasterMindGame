@@ -26,14 +26,13 @@ function init_game_board() {
         game_container.appendChild(game_row)
         game_container.children[row].setAttribute('row_number', `${row}`)
 
-
         // the game row area gets 90% (key panel already takes 10%), then divide this 90% by # of TURNS.
         // Prevents a row from growing too tall relative to the other rows.
         let row_height = 90 / TURNS
         game_container.children[row].style.maxHeight = `${row_height}%`
 
+        // Initialize the individual elements for each row
         draw_game_row_elements(row)
-
     }
 
     // let all_game_rows = document.querySelectorAll('[turn_number]')
@@ -46,10 +45,12 @@ function init_game_board() {
     //     let testvar = 123123
     // });
 
+    // The center column of game_container will fill to 100% with key_panel and guess rows
     let key_panel = document.createElement("div");
     game_container.appendChild(key_panel);
     game_container.children[TURNS + 1].id = "key-panel";
 
+    // This will display on a new "rightmost" column based on CSS filling center column already
     let right_game_panel = document.createElement("div");
     game_container.appendChild(right_game_panel);
     game_container.children[TURNS + 2].id = "right-game-panel";
@@ -72,13 +73,14 @@ function draw_game_row_elements(row) {
             let green_arrow_area = document.createElement("div");
             cur_game_row[0].appendChild(green_arrow_area)
             let green_arrow = cur_game_row[0].querySelectorAll("div");
-            green_arrow[0].setAttribute("arrow", "green");
-            green_arrow[0].setAttribute("t_number", `${row}`);
+            green_arrow[0].setAttribute("t_num", `${row}`);
             if (col == 1 && row == 1) {
                 //green_arrow[0].setAttribute("hidden", "false");
+                green_arrow[0].setAttribute("arrow", "green");
                 green_arrow[0].style.background = "no-repeat url('images/green_arrow.png') center";
             } else {
                 //green_arrow[0].setAttribute("null", "");
+                green_arrow[0].setAttribute("arrow", "null");
                 green_arrow[0].innerHTML = ""
             }
 
@@ -94,8 +96,8 @@ function draw_game_row_elements(row) {
             let piece_placement_area = document.createElement("div");
             cur_game_row[0].appendChild(piece_placement_area)
             let cur_piece_area = cur_game_row[0].querySelectorAll("div");
-            cur_piece_area[col-1].setAttribute("piece_number", `${col - 1}`);
-            cur_piece_area[col-1].setAttribute("t_number", `${row}`);
+            cur_piece_area[col-1].setAttribute("p_num", `${col - 1}`);
+            cur_piece_area[col-1].setAttribute("t_num", `${row}`);
         }
     }
 }
