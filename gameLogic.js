@@ -4,6 +4,7 @@ let TURNS = 10;  // Planned option to increase/decrease this later to change dif
 let game_state = "unfinished";
 let current_turn = 1;
 let colors = ['DeNada', 'red', 'green', 'blue', 'orange', 'violet', 'yellow', 'square', 'diamond', 'asterisk', 'cross']
+let winning_combo = [];
 // End GLOBAL variable definitions
 
 
@@ -68,6 +69,8 @@ function init_game_board() {
     init_right_panel_elements()
 }
 
+// Sub function for init_game_board()
+// Param: row: type string, current "guess area" row being initialized
 // Initialize each game row's child elements:
 // Each game row consists of:
 // - Current turn arrow indicator
@@ -93,11 +96,19 @@ function draw_game_row_elements(row) {
             }
 
         } else if (col == 6) {
-            // create the 4 peg areas
+            // create the 4 peg feedback areas
             let piece_placement_area = document.createElement("div");
             cur_game_row[0].appendChild(piece_placement_area)
             let cur_piece_area = cur_game_row[0].querySelectorAll("div");
             cur_piece_area[col-1].setAttribute("peg_placement_area", `${col - 1}`);
+            for (let i = 1; i < 5; i++) {
+                let peg_feedback = document.createElement("div");
+                peg_feedback.setAttribute("t_num", `${row}`);
+                peg_feedback.setAttribute("feedback_num", `${i}`);
+                peg_feedback.style.background = `url('images/peg_empty.png') center no-repeat`;
+                peg_feedback.id = 'peg_feedback'
+                cur_piece_area[col-1].appendChild(peg_feedback)
+            }
             //cur_piece_area[col-1].setAttribute("turn_number", `${col}`);
         } else {
             // Create the four game piece placement areas
@@ -106,6 +117,7 @@ function draw_game_row_elements(row) {
             let cur_piece_area = cur_game_row[0].querySelectorAll("div");
             cur_piece_area[col-1].setAttribute("p_num", `${col - 1}`);
             cur_piece_area[col-1].setAttribute("t_num", `${row}`);
+            cur_piece_area[col-1].setAttribute("color_choice", "None");
         }
     }
 }
@@ -129,7 +141,7 @@ function draw_piece_choices() {
         left_panel.children[piece].setAttribute("color", `${colors[piece]}`)
         left_panel.children[piece].style.background = `url('images/${colors[piece]}.png') center no-repeat`;
         left_panel.children[piece].setAttribute('title', `Pick up ${colors[piece]} game-piece`);
-        left_panel.children[piece].style.backgroundSize = "75%";
+        left_panel.children[piece].style.backgroundSize = "contain";
     }
 }
 
@@ -144,6 +156,7 @@ function gen_win_pieces(){
 
         // Returns a random integer from 1 to number of game  piece colors in play
         let rand_piece = Math.floor(Math.random() * PIECES) + 1;
+        winning_combo.push(colors[rand_piece])
 
         let div_placeholder = document.createElement("div");
 
@@ -153,38 +166,11 @@ function gen_win_pieces(){
     }
 }
 
-// Function to listen for and to handle mouse and keyboard events.
-function standby_game() {
-    document.getElementById('left-game-panel').addEventListener("click", function(event) {
-        //console.dir(event.target.getAttribute('color'));  // use this in chrome
-        //console.log(event.target);
-        let possible_color = event.target.getAttribute('color')
-
-        let colors = ['DeNada', 'red', 'green', 'blue', 'orange', 'violet', 'yellow', 'square', 'diamond', 'asterisk', 'cross']
-
-
-        if (colors.includes(possible_color)){
-            document.body.style.cursor = `url('images/${possible_color}.png'), pointer`
-        }
-    });
-
-    window.addEventListener("keydown", function(event) {
-        if (`${event.code}` == "Escape"){
-            document.body.style.cursor = ""
-        }
-    }, true);
-
-    listen_gameboard()
-}
-
-
-
 // Draws the right panel items
 // - "Submit" guess button
-// - TODO Game piece buttons to send direct to guess area
+// - TODO Initialize game piece buttons to send colors direct to guess area
 function init_right_panel_elements() {
     let r_panel = document.getElementById('right-game-panel')
-
 
     // Column reverse ordering at this time has priority on the CSS:
     // Create the submit button
@@ -199,32 +185,87 @@ function init_right_panel_elements() {
     let clr_btn_ctnr = document.createElement("div")
     clr_btn_ctnr.id = "color_btn_container"
     r_panel.appendChild(clr_btn_ctnr)
-
-
 }
 
 
+
+
+
+
+// Function to listen for and to handle mouse and keyboard events.
+function standby_game() {
+
+    //handle user picking up game piece on left panel
+    document.getElementById('left-game-panel').addEventListener("click", function(event) {
+        //console.dir(event.target.getAttribute('color'));  // use this in chrome
+        //console.log(event.target);
+        let possible_color = event.target.getAttribute('color')
+        //let colors = ['DeNada', 'red', 'green', 'blue', 'orange', 'violet', 'yellow', 'square', 'diamond', 'asterisk', 'cross']
+        if (colors.includes(possible_color)){
+            document.body.style.cursor = `url('images/${possible_color}.png'), pointer`
+        }
+    });
+
+    // Handle mouse clicks on guess button:
+    document.getElementById('submit_btn').addEventListener("click", function(event) {
+        //console.dir(event.target.getAttribute('color'));  // use this in chrome
+        //console.log(event.target);
+        let possible_color = event.target.getAttribute('color')
+        //let colors = ['DeNada', 'red', 'green', 'blue', 'orange', 'violet', 'yellow', 'square', 'diamond', 'asterisk', 'cross']
+        if (possible_color == 'green' ){
+            event.target.setAttribute('color', 'red');
+            event.target.setAttribute('title', 'Confirm');
+            //event.target.style.color = '#BA0520FF';
+            event.target.style.background = "#BA0520FF";
+            event.target.innerText = "Confirm"
+        } else if (possible_color == 'red' ){
+
+            // Function call to check for win/loss conditions, increment turn otherwise:
+            validate_move()
+
+            event.target.setAttribute('color', 'green');
+            event.target.setAttribute('title', 'Submit your guess!');
+            //event.target.style.color = '#BA0520FF';
+            event.target.style.background = "darkgreen";
+            event.target.innerText = "Guess!"
+        }
+
+    });
+
+    // Handle user having a game piece picked up and user hits "escape", then drop the game piece
+    window.addEventListener("keydown", function(event) {
+        if (`${event.code}` == "Escape"){
+            document.body.style.cursor = ""
+        }
+    }, true);
+
+    listen_gameboard()
+}
+
+// Create event listeners for all possible game piece placement locations:
+// Handle placing game-pieces on game-board if user drops a piece onto board with mouse cursor
+// Handle removing game pieces if user clicks on already placed piece
 function listen_gameboard(){
-    let str_turn = current_turn.toString()
+    //let str_turn = current_turn.toString()
     let all_pieces = document.querySelectorAll('[p_num]')
     all_pieces.forEach((element) => {
         element.addEventListener('mousedown', function(event) {
             //console.dir(event.target.getAttribute('color'));  // use this in chrome
-            if (event.target.getAttribute('t_num') == str_turn
+            if (event.target.getAttribute('t_num') == current_turn.toString()
                 && document.body.style.cursor !== ""){
-                console.log(event.target);
-                console.log("p_num: ",event.target.getAttribute('p_num'));
-                console.log("t_num: ", event.target.getAttribute('t_num'));
-                console.log("success");
+                //console.log(event.target);
+                //console.log("p_num: ",event.target.getAttribute('p_num'));
+                //console.log("t_num: ", event.target.getAttribute('t_num'));
+                //console.log("success");
 
                 // Grab the current pointer color from the cursor info
                 let gp_color = parse_pointer_name(document.body.style.cursor)
 
                 // Place the selected game piece on the guess row:
                 event.target.style.background = `no-repeat url('images/${gp_color}.png') center`;
-                event.target.style.backgroundSize = "50% 50%";
+                event.target.style.backgroundSize = "40%";
                 event.target.setAttribute('color_choice', `${gp_color}`)
-            } else if (event.target.getAttribute('t_num') == str_turn
+            } else if (event.target.getAttribute('t_num') == current_turn.toString()
                 && document.body.style.cursor === "") {
                 console.log("remove piece request")
                 event.target.style.background = ``;
@@ -235,6 +276,7 @@ function listen_gameboard(){
 }
 
 // This function only returns the "color" string in the cursor options
+// Helper function for function listen_gameboard()
 function parse_pointer_name(str_cursor) {
     let string = ""
     let write = false
@@ -252,4 +294,107 @@ function parse_pointer_name(str_cursor) {
     return string
 }
 
+// Function call to check for win/loss conditions, increment turn otherwise:
+function validate_move() {
+    let game_container = document.getElementById('game-container')
+    let sub_elements = game_container.childNodes;
+    let row_combo = []
+
+    sub_elements[current_turn].childNodes.forEach((child) => {
+        let tmp_selection = child.getAttribute("color_choice")
+        if (tmp_selection != null) {
+            row_combo.push(tmp_selection)
+        }
+    });
+
+    let perfect_match = 0
+    let general_match = 0
+
+    // Make shallow copy of winning_combo using spread operator
+    let winning_combo_spread = [...winning_combo]
+    //console.log("row combo before: ", row_combo);
+    //console.log("winning_combo_spread before: ", winning_combo_spread);
+
+    for (let i = 0; i < winning_combo_spread.length; i++ ){
+        if (winning_combo_spread[i] === row_combo[i]) {
+            //console.log("same color and pos detected")
+            perfect_match += 1;
+
+            // delete the array reference to the perfect match found, so we dont find it again
+            row_combo.splice(i, 1)
+            winning_combo_spread.splice(i, 1)
+            i -= 1;
+        }
+    }
+
+    //console.log("length winning combo interim ", winning_combo_spread.length)
+    //console.log("row combo INTERIM: ", row_combo);
+    //console.log("winning_combo_spread INTERIM: ", winning_combo_spread);
+    // Now search for general matches (same color, wrong position)
+    for (let i = 0; i < winning_combo_spread.length; i++ ){
+        if (row_combo.indexOf(winning_combo_spread[i]) != -1) {
+            let pop_index = row_combo.indexOf(winning_combo_spread[i])
+            general_match += 1
+            row_combo.splice(pop_index, 1)
+        }
+    }
+
+    console.log("Perfect matches found: ", perfect_match)
+    console.log("General matches found: ", general_match)
+    //console.log("row combo: ", row_combo);
+    //console.log("winning combo: ", winning_combo);
+
+    if (perfect_match == 4) {
+        console.log("Win condition found")
+    } else {
+        draw_feedback_area(sub_elements, perfect_match, general_match)
+        increment_turn(sub_elements)
+    }
+
+}
+
+function draw_feedback_area(sub_elements, perfect_matches, partial_matches) {
+    //let game_container = document.getElementById('game-container')
+    //let sub_elements = game_container.childNodes;
+
+    // Point to div container containing the four feedback pegs for the current turn:
+    let feed_back_area = sub_elements[current_turn].childNodes;
+
+    // Now make the variable point to the four feedback peg elements
+    feed_back_area = feed_back_area[5].childNodes;
+    // Feedback area is the 5th child node of the row turn
+    //console.log(feed_back_area)
+
+    for (let i = 0; i < 4; i++) {
+        if (perfect_matches > 0) {
+            feed_back_area[i].style.background = `url('images/peg_correct.png') center no-repeat`;
+            perfect_matches -= 1;
+        } else if (partial_matches > 0) {
+            feed_back_area[i].style.background = `url('images/peg_almost_correct.png') center no-repeat`;
+            partial_matches -= 1;
+        } else {
+            feed_back_area[i].style.background = `url('images/peg_empty.png') center no-repeat`;
+        }
+    }
+}
+
+//
+// Arg: sub_elements: nodeList of game container. Index of this nodeList equals the respective turn # row
+function increment_turn(sub_elements) {
+
+    current_turn += 1;
+    if (current_turn > TURNS) {
+        console.log("Loss condition detected: Out of turns")
+    } else {
+        console.log("incr ", sub_elements)
+        let old_arrow_area = sub_elements[current_turn - 1].childNodes
+        old_arrow_area[0].setAttribute("null", "");
+        old_arrow_area[0].setAttribute("arrow", "null");
+        old_arrow_area[0].style.background = "";
+
+        let new_arrow_area = sub_elements[current_turn].childNodes
+        new_arrow_area[0].setAttribute("arrow", "green");
+        new_arrow_area[0].style.background = "no-repeat url('images/green_arrow.png') center";
+    }
+}
 

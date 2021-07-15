@@ -1,5 +1,9 @@
 body {
     padding: 10px 10px;
+
+    /* Below prevents blue highlighting of game container on mobile devices on tap */
+    -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+    -webkit-tap-highlight-color: transparent !important;
 }
 
 #game-container{
@@ -10,6 +14,10 @@ body {
     height: 90vh;
     flex-wrap: wrap;
     justify-content: start;
+
+    /* Below prevents blue highlighting of game container on mobile devices on tap */
+    -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+    -webkit-tap-highlight-color: transparent !important;
 }
 
 #left-game-panel{
@@ -57,6 +65,11 @@ div[row_number]:nth-of-type(even) {
     background-image: url("images/wood_texture_1.jpg");
 }
 
+#key-panel > div[color] {
+    height: 50%;
+    border: 1px solid black;
+}
+
 #key-panel{
     display: flex;
     flex: 0 0 auto;
@@ -88,56 +101,74 @@ div[row_number]:nth-of-type(even) {
 div[color]{
     display: flex;
     /*margin: 20px 10px; FIXTHIS scaling later*/
-    margin: 0.2em;
+    margin: 0.4em;
     width: 25%;
-    height: 5vh;
+    height: 5%;
     /*background: red;*/
-    border: 1px solid black;
+    /*border: 1px solid black;*/
     background-repeat: no-repeat;
-    background-size: auto;
 }
 
 div[arrow] {
-    display: flex;
-    max-width: 16%;
-    min-width: 16%;
+display: flex;
+max-width: 16%;
+min-width: 16%;
 }
 
 div[p_num] {
-    background-color: rgba(0, 255, 180, 0.06);
-    border-left: 1px solid black;
-    width: 16%;
+background-color: rgba(0, 255, 180, 0.06);
+border-left: 1px solid black;
+width: 16%;
 }
 
 div[peg_placement_area] {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
     background-color: rgba(0, 0, 255, 0.06);
     border-left: 1px solid black;
     max-width: 17%;
     min-width: 17%;
 }
 
+#peg_feedback {
+    min-width: 40%;
+    max-width: 40%;
+    min-height: 40%;
+    max-height: 40%;
+    border: 1px solid black;
+    /*border-radius: 100%;*/
+}
+
+
+
 #color_btn_container {
-    width: 75%;
-    height: 75%;
-    border: 1px dotted black;
+width: 75%;
+height: 75%;
+border: 1px dotted black;
 }
 
 
 #submit_btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2.2vw;
-    color: #62ff25;
-    background: darkgreen;
-    border: 1px solid black;
-    width: 50%;
-    height: 5%;
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 2.2vw;
+color: #62ff25;
+background: darkgreen;
+border: 1px solid black;
+width: 50%;
+height: 5%;
 }
 
 /* ID submit_btn, but only when element's attribute color = green */
-#submit_btn[color=green]:hover {;
+#submit_btn[color=green]:hover {
     border: 1px dotted #62ff25;
+}
+
+#submit_btn[color=red]:hover {
+    border: 1px dotted #ff8e9e;
 }
 
 #submit_btn {
