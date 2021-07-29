@@ -336,6 +336,12 @@ function init_right_panel_elements() {
     clr_btn_ctnr.id = "color_btn_container"
     r_panel.appendChild(clr_btn_ctnr)
 
+    let color_btn_ctnr = document.getElementById("color_btn_container")
+    let feed_back_area = document.createElement("div");
+    feed_back_area.id = "feed-back-text"
+    feed_back_area.innerHTML= "<mark>Selected</mark>"
+    color_btn_ctnr.appendChild(feed_back_area)
+
     // Create the " ? " button
     let div2 = document.createElement("div")
     div2.id = "directions_btn"
@@ -569,11 +575,15 @@ function standby_game() {
         //console.dir(event.target.getAttribute('color'));  // use this in chrome
         //console.log(event.target);
         let possible_color = event.target.getAttribute('color')
+        let color_feedback = document.getElementById('feed-back-text');
         //let colors = ['DeNada', 'red', 'green', 'blue', 'orange', 'violet', 'yellow', 'square', 'diamond', 'asterisk', 'cross']
         if (colors.includes(possible_color)){
             document.body.style.cursor = `url('images/${possible_color}.png'), pointer`
+            color_feedback.style.background = `url('images/${possible_color}.png') center center / contain no-repeat`;
+            color_feedback.style.backgroundSize = "contain";
         } else if (possible_color == 'cancel') {
             document.body.style.cursor = "";
+            color_feedback.style.background = '';
         }
     });
 

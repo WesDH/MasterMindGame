@@ -33,7 +33,7 @@ div[start_select_area]{
 }
 
 div #cancel {
-    margin-top: 65%;
+    margin-top: 4%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -41,8 +41,12 @@ div #cancel {
     color: #ff0000;
     background: rgba(120, 253, 200, 0.2);
     border: 1px solid #ff8500;
-    width: 75%;
-    height: 16%;
+    width: 45%;
+    height: 10%;
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 
 }
 
@@ -227,8 +231,8 @@ div[color]{
     display: flex;
     /*margin: 20px 10px; FIXTHIS scaling later*/
     margin: 0.4em;
-    width: 25%;
-    height: 5%;
+    width: 50%;
+    height: 8%;
     /*background: red;*/
     /*border: 1px solid black;*/
     background-repeat: no-repeat;
@@ -271,9 +275,36 @@ div[peg_placement_area] {
 }
 
 #color_btn_container {
-width: 75%;
-height: 75%;
-border: 1px dotted black;
+    display: flex;
+    justify-content: space-between;  /*This and align-items may be reversed due to column flex direction*/
+    align-items: center;
+    flex: 1 1 50%; /*This combination prevents the container growing to tall with padding added */
+    background-image: url("images/slate_texture_1.jpg");
+    padding-top: 5%;
+    padding-bottom: 5%;
+    /*background: darkgoldenrod;*/
+    flex-basis: 100%;
+    flex-direction: column-reverse;
+
+
+    width: 75%;
+    height: 75%;
+    border: 1px dotted black;
+}
+
+#feed-back-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    width: 75%;
+    height: 10%;
+    border: 1px dotted black;
+}
+
+mark {
+    color: #ff8500;
+    background-color: rgba(40, 40, 40, 0.5);
 }
 
 /* ID submit_btn, but only when element's attribute color = green */
@@ -354,8 +385,14 @@ border: 1px dotted black;
         padding: 0px 0px;
         font-size: 11px;
     }
+
+    #feed-back-text,
     #submit_btn {
-        font-size: 14px;
+        font-size: 8px;
+    }
+
+    div #cancel {
+        font-size: 13px;
     }
 
     #written-directions {
