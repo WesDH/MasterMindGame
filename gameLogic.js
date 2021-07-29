@@ -56,7 +56,7 @@ function handle_start_select(game_container) {
             console.log(event.target.innerText);
 
             // Select the clicked button
-            event.target.style.background = "url('images/btn_select.png')";
+            event.target.style.background = "url('assets/images/btn_select.png')";
             event.target.style.backgroundRepeat = "no-repeat";
             event.target.style.backgroundSize = "100% 100%";
             init_game_board()
@@ -84,7 +84,7 @@ function handle_turn_select(game_container) {
 
     // Default set turn difficulty to 10 and have this button selected:
     turns = 10
-    game_container.children[1].children[5].style.background = "url('images/btn_select.png')";
+    game_container.children[1].children[5].style.background = "url('assets/images/btn_select.png')";
     game_container.children[1].children[5].style.backgroundRepeat = "no-repeat";
     game_container.children[1].children[5].style.backgroundSize = "100% 100%";
 
@@ -95,7 +95,7 @@ function handle_turn_select(game_container) {
 
             // "Deselect" all buttons
             for(let i = 9; i >= 1; i--) {
-                game_container.children[1].children[i].style.background = "url('images/btn.png')";
+                game_container.children[1].children[i].style.background = "url('assets/images/btn.png')";
                 game_container.children[1].children[i].style.backgroundRepeat = "no-repeat";
                 game_container.children[1].children[i].style.backgroundSize = "100% 100%";
             }
@@ -104,7 +104,7 @@ function handle_turn_select(game_container) {
             turns = parseInt(event.target.innerText)  // set the turns variable to the button's difficulty clicked
 
             // Select the clicked button
-            event.target.style.background = "url('images/btn_select.png')";
+            event.target.style.background = "url('assets/images/btn_select.png')";
             event.target.style.backgroundRepeat = "no-repeat";
             event.target.style.backgroundSize = "100% 100%";
 
@@ -133,7 +133,7 @@ function handle_color_select(game_container) {
     //
     // Default set color difficulty to 10 and have this button selected:
     pieces = 6
-    game_container.children[2].children[3].style.background = "url('images/btn_select.png')";
+    game_container.children[2].children[3].style.background = "url('assets/images/btn_select.png')";
     game_container.children[2].children[3].style.backgroundRepeat = "no-repeat";
     game_container.children[2].children[3].style.backgroundSize = "100% 100%";
 
@@ -144,7 +144,7 @@ function handle_color_select(game_container) {
 
             // "Deselect" all buttons
             for(let i = 1; i <= 7; i++) {
-                game_container.children[2].children[i].style.background = "url('images/btn.png')";
+                game_container.children[2].children[i].style.background = "url('assets/images/btn.png')";
                 game_container.children[2].children[i].style.backgroundRepeat = "no-repeat";
                 game_container.children[2].children[i].style.backgroundSize = "100% 100%";
             }
@@ -153,7 +153,7 @@ function handle_color_select(game_container) {
             pieces = parseInt(event.target.innerText)  // set the turns variable to the button's difficulty clicked
 
             // Select the clicked button
-            event.target.style.background = "url('images/btn_select.png')";
+            event.target.style.background = "url('assets/images/btn_select.png')";
             event.target.style.backgroundRepeat = "no-repeat";
             event.target.style.backgroundSize = "100% 100%";
 
@@ -236,7 +236,7 @@ function draw_game_row_elements(row) {
             if (col == 1 && row == 1) {
                 //green_arrow[0].setAttribute("hidden", "false");
                 green_arrow[0].setAttribute("arrow", "green");
-                green_arrow[0].style.background = "no-repeat url('images/green_arrow.png') center";
+                green_arrow[0].style.background = "no-repeat url('assets/images/green_arrow.png') center";
                 green_arrow[0].style.backgroundSize = "contain"
             } else {
                 //green_arrow[0].setAttribute("null", "");
@@ -254,7 +254,7 @@ function draw_game_row_elements(row) {
                 let peg_feedback = document.createElement("div");
                 peg_feedback.setAttribute("t_num", `${row}`);
                 peg_feedback.setAttribute("feedback_num", `${i}`);
-                peg_feedback.style.background = `url('images/peg_empty.png') center no-repeat`;
+                peg_feedback.style.background = `url('assets/game_pegs/peg_empty.png') center no-repeat`;
                 peg_feedback.style.backgroundSize = "contain"
                 peg_feedback.id = 'peg_feedback'
                 cur_piece_area[col-1].appendChild(peg_feedback)
@@ -289,8 +289,8 @@ function draw_piece_choices() {
         let piece_div = document.createElement("div");
         left_panel.appendChild(piece_div)
         left_panel.children[piece].setAttribute("color", `${colors[piece]}`)
-        left_panel.children[piece].style.background = `url('images/${colors[piece]}.png') center center / contain no-repeat`;
-        left_panel.children[piece].setAttribute('title', `Pick up ${colors[piece]} game-piece`);
+        left_panel.children[piece].style.background = `url('assets/game_pieces/${colors[piece]}.png') center center / contain no-repeat`;
+        left_panel.children[piece].setAttribute('title', `[ ${colors[piece][0]} ] Pick up ${colors[piece]} game-piece`);
         left_panel.children[piece].style.backgroundSize = "contain";
     }
 
@@ -362,15 +362,15 @@ function init_right_panel_elements() {
 // Helper function for function listen_gameboard()
 function parse_pointer_name(str_cursor) {
     let string = ""
-    let write = false
+    let write = 0
     for (let i = 0; i < str_cursor.length; i++) {
         if (str_cursor[i] === '/') {
-            write = true
+            write += 1
             continue;
         } else if (str_cursor[i] === '.') {
             write = false
             break;
-        } else if (write === true){
+        } else if (write === 2){
             string += str_cursor[i]
         }
     }
@@ -457,13 +457,13 @@ function draw_feedback_area(sub_elements, perfect_matches, partial_matches) {
 
     for (let i = 0; i < 4; i++) {
         if (perfect_matches > 0) {
-            feed_back_area[i].style.background = `url('images/peg_correct.png') center no-repeat`;
+            feed_back_area[i].style.background = `url('assets/game_pegs/peg_correct.png') center no-repeat`;
             perfect_matches -= 1;
         } else if (partial_matches > 0) {
-            feed_back_area[i].style.background = `url('images/peg_almost_correct.png') center no-repeat`;
+            feed_back_area[i].style.background = `url('assets/game_pegs/peg_almost_correct.png') center no-repeat`;
             partial_matches -= 1;
         } else {
-            feed_back_area[i].style.background = `url('images/peg_empty.png') center no-repeat`;
+            feed_back_area[i].style.background = `url('assets/game_pegs/peg_empty.png') center no-repeat`;
         }
         feed_back_area[i].style.backgroundSize = "contain"
     }
@@ -488,7 +488,7 @@ function increment_turn(sub_elements) {
 
         let new_arrow_area = sub_elements[current_turn].childNodes
         new_arrow_area[0].setAttribute("arrow", "green");
-        new_arrow_area[0].style.background = "url('images/green_arrow.png') center center / contain no-repeat";
+        new_arrow_area[0].style.background = "url('assets/images/green_arrow.png') center center / contain no-repeat";
     }
 }
 
@@ -504,7 +504,7 @@ function show_solution() {
     for (let i = 1; i <= 4; i++){
         let div_placeholder = document.createElement("div");
         key_panel.appendChild(div_placeholder).setAttribute("color", `${winning_combo[i-1]}`);
-        key_panel.children[i].style.backgroundImage = `url('images/${winning_combo[i-1]}.png')`;
+        key_panel.children[i].style.backgroundImage = `url('assets/game_pieces/${winning_combo[i-1]}.png')`;
         key_panel.children[i].style.backgroundSize = "contain";
 
 
@@ -553,7 +553,7 @@ function listen_gameboard(){
                 let gp_color = parse_pointer_name(document.body.style.cursor)
 
                 // Place the selected game piece on the guess row:
-                event.target.style.background = `no-repeat url('images/${gp_color}.png') center`;
+                event.target.style.background = `no-repeat url('assets/game_pieces/${gp_color}.png') center`;
                 event.target.style.backgroundSize = "45%";
                 event.target.setAttribute('color_choice', `${gp_color}`)
             } else if (event.target.getAttribute('t_num') == current_turn.toString()
@@ -578,8 +578,8 @@ function standby_game() {
         let color_feedback = document.getElementById('feed-back-text');
         //let colors = ['DeNada', 'red', 'green', 'blue', 'orange', 'violet', 'yellow', 'square', 'diamond', 'asterisk', 'cross']
         if (colors.includes(possible_color)){
-            document.body.style.cursor = `url('images/${possible_color}.png'), pointer`
-            color_feedback.style.background = `url('images/${possible_color}.png') center center / contain no-repeat`;
+            document.body.style.cursor = `url('assets/game_pieces/${possible_color}.png'), pointer`
+            color_feedback.style.background = `url('assets/game_pieces/${possible_color}.png') center center / contain no-repeat`;
             color_feedback.style.backgroundSize = "contain";
         } else if (possible_color == 'cancel') {
             document.body.style.cursor = "";
@@ -630,17 +630,17 @@ function create_bindings() {
     // Handle user having a game piece picked up and user hits "escape", then drop the game piece
     window.addEventListener("keydown", function(event) {
         if (`${event.key}` == "Escape"){ document.body.style.cursor = "" }
-        else if (`${event.key}` == "r"){ document.body.style.cursor = `url('images/red.png'), pointer` }
-        else if (`${event.key}` == "g"){ document.body.style.cursor = `url('images/green.png'), pointer` }
-        else if (`${event.key}` == "b"){ document.body.style.cursor = `url('images/blue.png'), pointer` }
-        else if (`${event.key}` == "o"){ document.body.style.cursor = `url('images/orange.png'), pointer` }
-        else if (`${event.key}` == "v" && pieces >= 5){ document.body.style.cursor = `url('images/violet.png'), pointer` }
-        else if (`${event.key}` == "p" && pieces >= 5){ document.body.style.cursor = `url('images/violet.png'), pointer` }
-        else if (`${event.key}` == "y" && pieces >= 6){ document.body.style.cursor = `url('images/yellow.png'), pointer` }
-        else if (`${event.key}` == "s" && pieces >= 7){ document.body.style.cursor = `url('images/square.png'), pointer` }
-        else if (`${event.key}` == "d" && pieces >= 8){ document.body.style.cursor = `url('images/diamond.png'), pointer` }
-        else if (`${event.key}` == "a" && pieces >= 9){ document.body.style.cursor = `url('images/asterisk.png'), pointer` }
-        else if (`${event.key}` == "c" && pieces >= 10){ document.body.style.cursor = `url('images/cross.png'), pointer` }
+        else if (`${event.key}` == "r"){ document.body.style.cursor = `url('assets/game_pieces/red.png'), pointer` }
+        else if (`${event.key}` == "g"){ document.body.style.cursor = `url('assets/game_pieces/green.png'), pointer` }
+        else if (`${event.key}` == "b"){ document.body.style.cursor = `url('assets/game_pieces/blue.png'), pointer` }
+        else if (`${event.key}` == "o"){ document.body.style.cursor = `url('assets/game_pieces/orange.png'), pointer` }
+        else if (`${event.key}` == "v" && pieces >= 5){ document.body.style.cursor = `url('assets/game_pieces/violet.png'), pointer` }
+        else if (`${event.key}` == "p" && pieces >= 5){ document.body.style.cursor = `url('assets/game_pieces/violet.png'), pointer` }
+        else if (`${event.key}` == "y" && pieces >= 6){ document.body.style.cursor = `url('assets/game_pieces/yellow.png'), pointer` }
+        else if (`${event.key}` == "s" && pieces >= 7){ document.body.style.cursor = `url('assets/game_pieces/square.png'), pointer` }
+        else if (`${event.key}` == "d" && pieces >= 8){ document.body.style.cursor = `url('assets/game_pieces/diamond.png'), pointer` }
+        else if (`${event.key}` == "a" && pieces >= 9){ document.body.style.cursor = `url('assets/game_pieces/asterisk.png'), pointer` }
+        else if (`${event.key}` == "c" && pieces >= 10){ document.body.style.cursor = `url('assets/game_pieces/cross.png'), pointer` }
     }, true);
 }
 
@@ -674,15 +674,30 @@ function show_directions() {
     gameBoard.children[1].appendChild(directions)
     gameBoard.children[1].children[0].id = "written-directions"
     gameBoard.children[1].children[0].innerHTML =
-        "<b>Game Instructions:</b> <p>There are 4 randomly chosen colors on the top row (hidden). This is the code created by the CPU. You are the codebreaker and must guess this code in as few turns as possible." +
+        "<br><b>Game Instructions:</b> <p>There are 4 randomly chosen colors on the top row (hidden). This is the code created by the CPU. You are the codebreaker and must guess this code in as few turns as possible." +
         "<p>1) The other empty rows are the amount of turns you have to correctly guess the colors and their correct position." +
         "<p>2) Try picking up game pieces and placing them on the current row where it is your turn." +
         "<p>3) If you think you have a good guess, hit submit." +
         "<p>4) You will receive feedback from the CPU. A black dot means you guessed a correct color AND position. A white dot means you guessed a correct color, but it's in the wrong position. An empty dot means that one of your colors you guessed is not in the secret code." +
         "<p>5) If you guessed to correct colors and positions before running out of turns, you win! If you run out of turns to guess, you lose." +
         "<p>6) Choose you difficulty level and play again!" +
+        "<br><b><p>Gamepiece Selection Hotkeys:</p></b>" +
+        "<p>&#8226;<b>R</b> - Red</p>" +
+        "<p>&#8226;<b>G</b> - Green</p>" +
+        "<p>&#8226;<b>B</b> - Blue</p>" +
+        "<p>&#8226;<b>O</b> - Orange</p>" +
+        "<p>&#8226;<b>P, V</b> - Purple / Violet</p>" +
+        "<p>&#8226;<b>Y</b> - Yellow</p>" +
+        "<p>&#8226;<b>S</b> - Square</p>" +
+        "<p>&#8226;<b>D</b> - Diamond</p>" +
+        "<p>&#8226;<b>A</b> - Asterisk</p>" +
+        "<p>&#8226;<b>C</b> - Cross</p>" +
+        "<p>&#8226;<b>Escape</b> - Deselect</p>" +
         "<p>&#8226; Want to learn more? Read about Mastermind with <a href='https://en.wikipedia.org/wiki/Mastermind' target='_new' title='Mastermind Wikipedia Page'>THIS</a> Wikepedia link.</p>" +
         "<p>&#8226; Visual learner? Click <a href='https://www.youtube.com/watch?v=dMHxyulGrEk' target='_new' title='Youtube link'>HERE</a> to watch an instructional video on Youtube.</p>"
+
+
+
 
     let close = document.createElement("div")
     //gameBoard.appendChild(close)
@@ -711,11 +726,4 @@ function show_directions() {
         }
     });
 
-
-
-
-
-
-
-    let var123 =123
 }
