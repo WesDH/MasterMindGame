@@ -24,7 +24,7 @@ body {
 
 div[start_select_area]{
     padding-top: 1%;
-    background-image: url("images/btn.png");
+    background-image: url("assets/images/btn.png");
     background-repeat: no-repeat;
     background-size: 100% 100%;
     text-align: center;
@@ -63,7 +63,7 @@ section[color_difficulty_select_area] > div,
 section[turn_difficulty_select_area] > div {
     width: 8%;
     height: 100%;
-    background-image: url("images/btn.png");
+    background-image: url("assets/images/btn.png");
     background-repeat: no-repeat;
     background-size: 100% 100%;
     text-align: center;
@@ -71,7 +71,7 @@ section[turn_difficulty_select_area] > div {
 
 section[color_difficulty_select_area] > div:hover,
 section[turn_difficulty_select_area] > div:hover {
-    background-image: url("images/btn_hover.png");
+    background-image: url("assets/images/btn_hover.png");
     background-repeat: no-repeat;
     background-size: 100% 100%;
 }
@@ -79,7 +79,7 @@ section[turn_difficulty_select_area] > div:hover {
 section[color_difficulty_select_area] > section[difficulty_image],
 section[turn_difficulty_select_area] > section[difficulty_image]{
     width: 100%;
-    background-image: url("images/gradient.png");
+    background-image: url("assets/images/gradient.png");
     background-repeat: no-repeat;
     background-size: 100% 100%;
 }
@@ -91,7 +91,7 @@ section[turn_difficulty_select_area] > section[difficulty_image]{
     flex: 1 1 auto; /* prev 1 0 auto, changed 7/23/21 to fix slight overflow on top of panel */
     flex-direction: column;
 
-    background-image: url("images/slate_texture_1.jpg");
+    background-image: url("assets/images/slate_texture_1.jpg");
     /*flex-basis: 100%; */
 
     justify-content: start;  /*This and align-items may be reversed due to column flex direction*/
@@ -122,11 +122,11 @@ div[row_number]{
 }
 
 div[row_number]:nth-of-type(odd) {
-    background-image: url("images/wood_texture_2.jpg");
+    background-image: url("assets/images/wood_texture_2.jpg");
 }
 
 div[row_number]:nth-of-type(even) {
-    background-image: url("images/wood_texture_1.jpg");
+    background-image: url("assets/images/wood_texture_1.jpg");
 }
 
 #key-panel > div[color] {
@@ -158,7 +158,7 @@ div[row_number]:nth-of-type(even) {
     justify-content: space-between;  /*This and align-items may be reversed due to column flex direction*/
     align-items: center;
     flex: 1 1 50%; /*This combination prevents the container growing to tall with padding added */
-    background-image: url("images/slate_texture_1.jpg");
+    background-image: url("assets/images/slate_texture_1.jpg");
     padding-top: 5%;
     padding-bottom: 5%;
     /*background: darkgoldenrod;*/
@@ -176,7 +176,7 @@ div[row_number]:nth-of-type(even) {
     white-space: nowrap;
     width: 80%;
     height: 100%;
-    background-image: url("images/stucco_texture_1.jpg");
+    background-image: url("assets/images/stucco_texture_1.jpg");
     border-top-right-radius: 50px;
     border-bottom-right-radius: 50px;
     border-right: 1px solid black;
@@ -284,7 +284,7 @@ div[peg_placement_area] {
     justify-content: space-between;  /*This and align-items may be reversed due to column flex direction*/
     align-items: center;
     flex: 1 1 50%; /*This combination prevents the container growing to tall with padding added */
-    background-image: url("images/slate_texture_1.jpg");
+    background-image: url("assets/images/slate_texture_1.jpg");
     padding-top: 5%;
     padding-bottom: 5%;
     /*background: darkgoldenrod;*/
