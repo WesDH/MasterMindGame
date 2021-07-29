@@ -601,6 +601,8 @@ function standby_game() {
             event.target.innerText = "Confirm"
         } else if (possible_color == 'red' ){
 
+            document.getElementById('feed-back-text').style.background = '';  // Reset "selected" area to empty
+
             // Function call to check for win/loss conditions, increment turn otherwise:
             validate_move()
 
@@ -618,15 +620,28 @@ function standby_game() {
         show_directions()
     });
 
-
-    // Handle user having a game piece picked up and user hits "escape", then drop the game piece
-    window.addEventListener("keydown", function(event) {
-        if (`${event.code}` == "Escape"){
-            document.body.style.cursor = ""
-        }
-    }, true);
+    create_bindings()
 
     listen_gameboard()
+}
+
+//let colors = ['DeNada', 'red', 'green', 'blue', 'orange', 'violet', 'yellow', 'square', 'diamond', 'asterisk', 'cro
+function create_bindings() {
+    // Handle user having a game piece picked up and user hits "escape", then drop the game piece
+    window.addEventListener("keydown", function(event) {
+        if (`${event.key}` == "Escape"){ document.body.style.cursor = "" }
+        else if (`${event.key}` == "r"){ document.body.style.cursor = `url('images/red.png'), pointer` }
+        else if (`${event.key}` == "g"){ document.body.style.cursor = `url('images/green.png'), pointer` }
+        else if (`${event.key}` == "b"){ document.body.style.cursor = `url('images/blue.png'), pointer` }
+        else if (`${event.key}` == "o"){ document.body.style.cursor = `url('images/orange.png'), pointer` }
+        else if (`${event.key}` == "v" && pieces >= 5){ document.body.style.cursor = `url('images/violet.png'), pointer` }
+        else if (`${event.key}` == "p" && pieces >= 5){ document.body.style.cursor = `url('images/violet.png'), pointer` }
+        else if (`${event.key}` == "y" && pieces >= 6){ document.body.style.cursor = `url('images/yellow.png'), pointer` }
+        else if (`${event.key}` == "s" && pieces >= 7){ document.body.style.cursor = `url('images/square.png'), pointer` }
+        else if (`${event.key}` == "d" && pieces >= 8){ document.body.style.cursor = `url('images/diamond.png'), pointer` }
+        else if (`${event.key}` == "a" && pieces >= 9){ document.body.style.cursor = `url('images/asterisk.png'), pointer` }
+        else if (`${event.key}` == "c" && pieces >= 10){ document.body.style.cursor = `url('images/cross.png'), pointer` }
+    }, true);
 }
 
 
@@ -655,7 +670,7 @@ function show_directions() {
     gameBoard.children[1].id = "instructions-panel"
 
     let directions = document.createElement("div")
-    gameBoard.appendChild(directions)
+    //gameBoard.appendChild(directions)
     gameBoard.children[1].appendChild(directions)
     gameBoard.children[1].children[0].id = "written-directions"
     gameBoard.children[1].children[0].innerHTML =
@@ -670,11 +685,19 @@ function show_directions() {
         "<p>&#8226; Visual learner? Click <a href='https://www.youtube.com/watch?v=dMHxyulGrEk' target='_new' title='Youtube link'>HERE</a> to watch an instructional video on Youtube.</p>"
 
     let close = document.createElement("div")
-    gameBoard.appendChild(close)
+    //gameBoard.appendChild(close)
     gameBoard.children[1].appendChild(close)
     gameBoard.children[1].children[1].id = "close-directions"
     gameBoard.children[1].children[1].innerText = "X"
     gameBoard.children[1].children[1].setAttribute('title', `Close directions`);
+
+    // Create a hidden, unused feedback area, so if user clicks a game piece while directions are open,
+    // THen game does not output error message to console.
+    let feedbackHidden = document.createElement("div")
+    feedbackHidden.id = "feed-back-text"
+    feedbackHidden.style.width = '0px';
+    feedbackHidden.style.height = '0px';
+    gameBoard.children[1].appendChild(feedbackHidden)
 
     // Await user to click on the "X" to close directions
     document.getElementById('close-directions').addEventListener("click", function(event) {

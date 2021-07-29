@@ -225,6 +225,7 @@ div[row_number]:nth-of-type(even) {
 
 #close-directions:hover {
     border: 1px solid #62ff25;
+    cursor: pointer;
 }
 
 div[color]{
@@ -236,6 +237,10 @@ div[color]{
     /*background: red;*/
     /*border: 1px solid black;*/
     background-repeat: no-repeat;
+}
+
+div[color]:hover {
+    cursor: pointer;
 }
 
 #key-panel div[color] {
@@ -313,7 +318,7 @@ mark {
 }
 
 #submit_btn[color=red]:hover {
-    width: 98%;
+    width: 65%;
     border: 1px dotted #ff8e9e;
 }
 
