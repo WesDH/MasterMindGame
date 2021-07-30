@@ -9,7 +9,7 @@ let winning_combo = [];
 
 
 window.addEventListener('DOMContentLoaded', (event) => {
-    console.log('DOM fully loaded and parsed');
+    //console.log('DOM fully loaded and parsed');
 
     // Should have "difficult select here"
 
@@ -53,7 +53,7 @@ function handle_start_select(game_container) {
     game_container.children[0].addEventListener("click", function(event) {
 
         if (event.target.tagName === 'DIV') {
-            console.log(event.target.innerText);
+            console.log("Game Starting!");
 
             // Select the clicked button
             event.target.style.background = "url('assets/images/btn_select.png')";
@@ -100,7 +100,7 @@ function handle_turn_select(game_container) {
                 game_container.children[1].children[i].style.backgroundSize = "100% 100%";
             }
 
-            console.log(event.target.innerText);
+            //console.log(event.target.innerText);
             turns = parseInt(event.target.innerText)  // set the turns variable to the button's difficulty clicked
 
             // Select the clicked button
@@ -149,7 +149,7 @@ function handle_color_select(game_container) {
                 game_container.children[2].children[i].style.backgroundSize = "100% 100%";
             }
 
-            console.log(event.target.innerText);
+            //console.log(event.target.innerText);
             pieces = parseInt(event.target.innerText)  // set the turns variable to the button's difficulty clicked
 
             // Select the clicked button
@@ -312,7 +312,7 @@ function gen_win_pieces(){
         let rand_piece = Math.floor(Math.random() * pieces) + 1;
         winning_combo.push(colors[rand_piece])
     }
-    console.log(winning_combo);
+    //console.log(winning_combo);
 }
 
 // Draws the right panel items:
@@ -423,8 +423,8 @@ function validate_move() {
         }
     }
 
-    console.log("Perfect matches found: ", perfect_match)
-    console.log("General matches found: ", general_match)
+    //console.log("Perfect matches found: ", perfect_match)
+    //console.log("General matches found: ", general_match)
     //console.log("row combo: ", row_combo);
     //console.log("winning combo: ", winning_combo);
 
@@ -480,7 +480,7 @@ function increment_turn(sub_elements) {
         show_solution()
         prompt_replay()
     } else {
-        console.log("incr ", sub_elements)
+        //console.log("incr ", sub_elements)
         let old_arrow_area = sub_elements[current_turn - 1].childNodes
         old_arrow_area[0].setAttribute("null", "");
         old_arrow_area[0].setAttribute("arrow", "null");
@@ -558,7 +558,7 @@ function listen_gameboard(){
                 event.target.setAttribute('color_choice', `${gp_color}`)
             } else if (event.target.getAttribute('t_num') == current_turn.toString()
                 && document.body.style.cursor === "") {
-                console.log("remove piece request")
+                //console.log("remove piece request")
                 event.target.style.background = ``;
                 event.target.setAttribute('color_choice', "")
             }
@@ -629,10 +629,18 @@ function standby_game() {
 function create_bindings() {
     // Handle user having a game piece picked up and user hits "escape", then drop the game piece
     window.addEventListener("keydown", function(event) {
-        if (`${event.key}` == "Escape"){ document.body.style.cursor = "" }
-        else if (`${event.key}` == "r"){ document.body.style.cursor = `url('assets/game_pieces/red.png'), pointer` }
-        else if (`${event.key}` == "g"){ document.body.style.cursor = `url('assets/game_pieces/green.png'), pointer` }
-        else if (`${event.key}` == "b"){ document.body.style.cursor = `url('assets/game_pieces/blue.png'), pointer` }
+        let feedback_Area = document.getElementById('feed-back-text')
+        if (`${event.key}` == "Escape") { document.body.style.cursor = "" }
+        else if (`${event.key}` == "r") {
+            document.body.style.cursor = `url('assets/game_pieces/red.png'), pointer`
+            feedback_Area.style.background = `url('assets/game_pieces/red.png') center center / contain no-repeat`;
+        } else if (`${event.key}` == "g") {
+            document.body.style.cursor = `url('assets/game_pieces/green.png'), pointer`
+            feedback_Area.style.background = `url('assets/game_pieces/green.png') center center / contain no-repeat`;
+        } else if (`${event.key}` == "b") {
+            document.body.style.cursor = `url('assets/game_pieces/blue.png'), pointer`
+            feedback_Area.style.background = `url('assets/game_pieces/blue.png') center center / contain no-repeat`;
+        }
         else if (`${event.key}` == "o"){ document.body.style.cursor = `url('assets/game_pieces/orange.png'), pointer` }
         else if (`${event.key}` == "v" && pieces >= 5){ document.body.style.cursor = `url('assets/game_pieces/violet.png'), pointer` }
         else if (`${event.key}` == "p" && pieces >= 5){ document.body.style.cursor = `url('assets/game_pieces/violet.png'), pointer` }
@@ -693,7 +701,7 @@ function show_directions() {
         "<p>&#8226;<b>A</b> - Asterisk</p>" +
         "<p>&#8226;<b>C</b> - Cross</p>" +
         "<p>&#8226;<b>Escape</b> - Deselect</p>" +
-        "<p>&#8226; Want to learn more? Read about Mastermind with <a href='https://en.wikipedia.org/wiki/Mastermind' target='_new' title='Mastermind Wikipedia Page'>THIS</a> Wikepedia link.</p>" +
+        "<p>&#8226; Want to learn more? Read about Mastermind with <a href='https://en.wikipedia.org/wiki/Mastermind_(board_game)' target='_new' title='Mastermind Wikipedia Page'>THIS</a> Wikepedia link.</p>" +
         "<p>&#8226; Visual learner? Click <a href='https://www.youtube.com/watch?v=dMHxyulGrEk' target='_new' title='Youtube link'>HERE</a> to watch an instructional video on Youtube.</p>"
 
 

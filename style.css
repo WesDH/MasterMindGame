@@ -282,6 +282,7 @@ div[peg_placement_area] {
 #color_btn_container {
     display: flex;
     justify-content: space-between;  /*This and align-items may be reversed due to column flex direction*/
+    flex-direction: column;
     align-items: center;
     flex: 1 1 50%; /*This combination prevents the container growing to tall with padding added */
     background-image: url("assets/images/slate_texture_1.jpg");
@@ -289,7 +290,6 @@ div[peg_placement_area] {
     padding-bottom: 5%;
     /*background: darkgoldenrod;*/
     flex-basis: 100%;
-    flex-direction: column-reverse;
 
 
     width: 75%;
@@ -299,6 +299,7 @@ div[peg_placement_area] {
 
 #feed-back-text {
     display: flex;
+    margin-top: 50%;
     justify-content: center;
     align-items: center;
     font-size: 12px;
