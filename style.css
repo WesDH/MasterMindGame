@@ -4,7 +4,7 @@ body {
     /* Below prevents blue highlighting of game container on mobile devices on tap */
     -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
     -webkit-tap-highlight-color: transparent !important;
-    background-image: url("https://images.unsplash.com/photo-1426604966848-d7adac402bff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8bmF0dXJlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80");
+    /* background-image: url("https://images.unsplash.com/photo-1426604966848-d7adac402bff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8bmF0dXJlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80"); */
     background-repeat: no-repeat;
     background-size: 100%;
 }
