@@ -22,6 +22,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 // Function to draw the difficulty select screen
 function select_difficulty() {
+    backgroundMS()
     let game_container = document.getElementById("game-container");
     game_container.innerHTML = "" // Reset game board
     game_container.style.justifyContent = "space-evenly"
@@ -687,7 +688,7 @@ function show_directions() {
         "<p>2) Try picking up game pieces and placing them on the current row where it is your turn." +
         "<p>3) If you think you have a good guess, hit submit." +
         "<p>4) You will receive feedback from the CPU. A black dot means you guessed a correct color AND position. A white dot means you guessed a correct color, but it's in the wrong position. An empty dot means that one of your colors you guessed is not in the secret code." +
-        "<p>5) If you guessed to correct colors and positions before running out of turns, you win! If you run out of turns to guess, you lose." +
+        "<p>5) If you guessed the 4 correct colors and 4 correct positions before running out of turns, you win! If you run out of turns to guess, you lose." +
         "<p>6) Choose you difficulty level and play again!" +
         "<br><b><p>Gamepiece Selection Hotkeys:</p></b>" +
         "<p>&#8226;<b>R</b> - Red</p>" +
@@ -735,3 +736,17 @@ function show_directions() {
     });
 
 }
+
+function backgroundMS() {
+    fetch('https://nature-image-web-scraper.wl.r.appspot.com/a-nature-image',
+        {method: 'GET'})
+        .then(response => response.json())
+        .then(data => applyBackground(data.imageUrl));
+
+    function applyBackground(theURL) {
+        console.log(theURL)
+        const page_body = document.body
+        page_body.style.backgroundImage = `url(${theURL})`;
+    }
+}
+
