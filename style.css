@@ -389,8 +389,6 @@ mark {
     height: 14%;
 }
 
-
-
 /* ID submit_btn, but only when element's attribute color = green */
 #directions_btn:hover {
     border: 1px solid #62ff25;
@@ -407,6 +405,11 @@ mark {
     border: 1px solid black;
     width: 38%;
     height: 8%;
+}
+
+#hotkey_directions {
+    padding-left: 2%;
+    text-align: left;
 }
 
 /* Define responsive behavior to adapt smaller viewports below: */

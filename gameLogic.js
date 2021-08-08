@@ -1,3 +1,11 @@
+/*
+Author: Wesley Havens
+Date: August 8th, 2021
+Title: MasterMind Board Game
+Description: This is the primary logic file for the boardgame. The game is handled via Javascript DOM insertion.
+*/
+
+
 // Define GLOBAL scope variables:
 let pieces = 10;  // Default difficulty select 10
 let turns = 10;  // Default difficulty turns 10
@@ -313,7 +321,8 @@ function draw_piece_choices() {
         left_panel.appendChild(piece_div)
         left_panel.children[piece].setAttribute("color", `${colors[piece]}`)
         left_panel.children[piece].style.background = `url('assets/game_pieces/${colors[piece]}.png') center center / contain no-repeat`;
-        left_panel.children[piece].setAttribute('title', `[ ${colors[piece][0]} ] Pick up ${colors[piece]} game-piece`);
+        let color_letter_upper = colors[piece][0].toUpperCase()
+        left_panel.children[piece].setAttribute('title', `[${color_letter_upper}] Pick up ${colors[piece]} game-piece`);
         left_panel.children[piece].style.backgroundSize = "contain";
     }
 
@@ -322,7 +331,7 @@ function draw_piece_choices() {
     left_panel.children[pieces + 1].setAttribute("color", `cancel`);
     left_panel.children[pieces + 1].innerText = "Undo";
     left_panel.children[pieces + 1].id = 'cancel';
-    left_panel.children[pieces + 1].setAttribute('title', `(mobile friendly) Click to cancel a game piece, by default can click to remove gamepiece if no piece is picked up`);
+    left_panel.children[pieces + 1].setAttribute('title', `[Escape] Click on any already placed game piece to remove from current turn.`);
 
 }
 
@@ -351,7 +360,7 @@ function init_right_panel_elements() {
     let div1 = document.createElement("div")
     div1.id = "submit_btn"
     div1.setAttribute('color', 'green');
-    div1.setAttribute('title', 'Submit your guess!');
+    div1.setAttribute('title', '[Spacebar] Submit your guess!');
     div1.innerText = "Guess!"
     r_panel.appendChild(div1)
 
@@ -628,7 +637,7 @@ function listen_guess_btn() {
         //let colors = ['DeNada', 'red', 'green', 'blue', 'orange', 'violet', 'yellow', 'square', 'diamond', 'asterisk', 'cross']
         if (possible_color == 'green' ){
             event.target.setAttribute('color', 'red');
-            event.target.setAttribute('title', 'Confirm');
+            event.target.setAttribute('title', '[Spacebar] Confirm');
             //event.target.style.color = '#BA0520FF';
             event.target.style.background = "#BA0520FF";
             event.target.innerText = "Confirm"
@@ -640,7 +649,7 @@ function listen_guess_btn() {
             validate_move()
 
             event.target.setAttribute('color', 'green');
-            event.target.setAttribute('title', 'Submit your guess!');
+            event.target.setAttribute('title', '[Spacebar] Submit your guess!');
             //event.target.style.color = '#BA0520FF';
             event.target.style.background = "darkgreen";
             event.target.innerText = "Guess!"
@@ -706,6 +715,33 @@ function create_bindings() {
             document.body.style.cursor = `url('assets/game_pieces/cross.png'), pointer`;
             feedback_Area.style.background = `url('assets/game_pieces/cross.png') center center / contain no-repeat`;
         }
+        else if (`${event.key}` == " ") {
+            let sbmt_btn = document.getElementById('submit_btn')
+                //console.dir(event.target.getAttribute('color'));  // use this in chrome
+                //console.log(event.target);
+                let possible_color = sbmt_btn.getAttribute('color')
+                //let colors = ['DeNada', 'red', 'green', 'blue', 'orange', 'violet', 'yellow', 'square', 'diamond', 'asterisk', 'cross']
+                if (possible_color == 'green' ){
+                    sbmt_btn.setAttribute('color', 'red');
+                    sbmt_btn.setAttribute('title', '[Spacebar] Confirm');
+                    //event.target.style.color = '#BA0520FF';
+                    sbmt_btn.style.background = "#BA0520FF";
+                    sbmt_btn.innerText = "Confirm"
+                } else if (possible_color == 'red' ){
+
+                    document.getElementById('feed-back-text').style.background = '';  // Reset "selected" area to empty
+
+                    // Function call to check for win/loss conditions, increment turn otherwise:
+                    validate_move()
+
+                    sbmt_btn.setAttribute('color', 'green');
+                    sbmt_btn.setAttribute('title', '[Spacebar] Submit your guess!');
+                    //event.target.style.color = '#BA0520FF';
+                    sbmt_btn.style.background = "darkgreen";
+                    sbmt_btn.innerText = "Guess!"
+                }
+
+        }
     }, true);
 }
 
@@ -750,6 +786,7 @@ function save_game_state(board, nodeLength) {
 }
 
 function initialize_directions(board) {
+
     let instructDIV = document.createElement("div")
     board.appendChild(instructDIV)
     board.children[1].id = "instructions-panel"
@@ -770,7 +807,8 @@ function initialize_directions(board) {
         "<p>5) If you guessed the 4 correct colors and 4 correct positions before running out of turns, you win! If " +
         "you run out of turns to guess, you lose." +
         "<p>6) Choose you difficulty level and play again!" +
-        "<br><b><p>Gamepiece Selection Hotkeys:</p></b>" +
+        "<br><br><b><p>Gamepiece Selection Hotkeys:</p></b>" +
+        "<div id=\"hotkey_directions\">" +
         "<p>&#8226;<b>R</b> - Red</p>" +
         "<p>&#8226;<b>G</b> - Green</p>" +
         "<p>&#8226;<b>B</b> - Blue</p>" +
@@ -782,7 +820,9 @@ function initialize_directions(board) {
         "<p>&#8226;<b>A</b> - Asterisk</p>" +
         "<p>&#8226;<b>C</b> - Cross</p>" +
         "<p>&#8226;<b>Escape</b> - Deselect</p>" +
-        "<p>&#8226; Want to learn more? Read about Mastermind with " +
+        "<p>&#8226;<b>Spacebar</b> - Submit Guess/Confirm</p>" +
+        "</div>" +
+        "<br><p>&#8226; Want to learn more? Read about Mastermind with " +
         "<a href='https://en.wikipedia.org/wiki/Mastermind_(board_game)' target='_new'" +
         " title='Mastermind Wikipedia Page'>THIS</a> Wikepedia link.</p>" +
         "<p>&#8226; Visual learner? Click <a href='https://www.youtube.com/watch?v=dMHxyulGrEk' target='_new' " +
