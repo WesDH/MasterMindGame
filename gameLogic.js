@@ -8,21 +8,18 @@ let winning_combo = [];
 // End GLOBAL variable definitions
 
 
+// Callback function on page load, initialize the difficulty selection menu
+// :params: None
+// :return: none
 window.addEventListener('DOMContentLoaded', (event) => {
-    //console.log('DOM fully loaded and parsed');
-
-    // Should have "difficult select here"
-
     select_difficulty()
 
-    //init_game_board()
-    //standby_game()
 });
 
 
 // Function to draw the difficulty select screen
 function select_difficulty() {
-    backgroundMS()
+    //backgroundMS()
     let game_container = document.getElementById("game-container");
     game_container.innerHTML = "" // Reset game board
     game_container.style.justifyContent = "space-evenly"
@@ -72,22 +69,31 @@ function handle_turn_select(game_container) {
     let difficulty_img = document.createElement("section");
     game_container.children[1].appendChild(difficulty_img);
     game_container.children[1].children[0].setAttribute("difficulty_image", "")
-    game_container.children[1].children[0].innerHTML = "Turns";
 
+    let easy = document.createElement("section");
+    let name = document.createElement("section");
+    let hard = document.createElement("section");
+    game_container.children[1].children[0].appendChild(easy);
+    game_container.children[1].children[0].appendChild(name);
+    game_container.children[1].children[0].appendChild(hard);
+    game_container.children[1].children[0].children[0].innerHTML = "Easier";
+    game_container.children[1].children[0].children[1].innerHTML = "(Number of Turns)";
+    game_container.children[1].children[0].children[2].innerHTML = "More Difficult";
 
     // Draw the 14 difficulty select TURN buttons:
     for (let t = 14; t >= 6; t--) {
         let game_container = document.getElementById("game-container");
-        let button = document.createElement("div");
-        game_container.children[1].appendChild(button);
-        button.textContent = `${t}`
+        let difficulty_btn = document.createElement("div");
+        game_container.children[1].appendChild(difficulty_btn);
+        difficulty_btn.textContent = `${t}`
     }
 
     // Default set turn difficulty to 10 and have this button selected:
     turns = 10
-    game_container.children[1].children[5].style.background = "url('assets/images/btn_select.png')";
-    game_container.children[1].children[5].style.backgroundRepeat = "no-repeat";
-    game_container.children[1].children[5].style.backgroundSize = "100% 100%";
+    setBackground(game_container.children[1].children[5],
+        "url('assets/images/btn_select.png')",
+        "no-repeat",
+        "100% 100%")
 
     // Listen for click on difficulty select buttons and update difficulty setting for TURN:
     game_container.children[1].addEventListener("click", function(event) {
@@ -96,22 +102,27 @@ function handle_turn_select(game_container) {
 
             // "Deselect" all buttons
             for(let i = 9; i >= 1; i--) {
-                game_container.children[1].children[i].style.background = "url('assets/images/btn.png')";
-                game_container.children[1].children[i].style.backgroundRepeat = "no-repeat";
-                game_container.children[1].children[i].style.backgroundSize = "100% 100%";
+                setBackground(game_container.children[1].children[i],
+                    "url('assets/images/btn.png')",
+                    "no-repeat",
+                    "100% 100%")
             }
 
-            //console.log(event.target.innerText);
             turns = parseInt(event.target.innerText)  // set the turns variable to the button's difficulty clicked
 
             // Select the clicked button
-            event.target.style.background = "url('assets/images/btn_select.png')";
-            event.target.style.backgroundRepeat = "no-repeat";
-            event.target.style.backgroundSize = "100% 100%";
-
+            setBackground(event.target, "url('assets/images/btn_select.png')", "no-repeat", "100% 100%")
         }
 
     });
+}
+
+// Helper function setBackground applies CSS background styling to the target element
+function setBackground (target, theURL, repeat, size) {
+    target.style.background = `${theURL}`;
+    target.style.backgroundRepeat = `${repeat}`;
+    target.style.backgroundSize = `${size}`;
+
 }
 
 
@@ -120,7 +131,18 @@ function handle_color_select(game_container) {
     let difficulty_img = document.createElement("section");
     game_container.children[2].appendChild(difficulty_img);
     game_container.children[2].children[0].setAttribute("difficulty_image", "")
-    game_container.children[2].children[0].innerHTML = "color choices";
+    let easy = document.createElement("section");
+    let name = document.createElement("section");
+    let hard = document.createElement("section");
+    //game_container.children[2].children[0].innerHTML = "color choices";
+    game_container.children[2].children[0].appendChild(easy)
+    game_container.children[2].children[0].appendChild(name)
+    game_container.children[2].children[0].appendChild(hard)
+    game_container.children[2].children[0].children[0].innerText = "Easier";
+    game_container.children[2].children[0].children[1].innerHTML = "(Color Choices)";
+    game_container.children[2].children[0].children[2].innerText = "More Difficult";
+
+
     //
     //
     // Draw the 10 difficulty select COLOR buttons:
@@ -316,10 +338,11 @@ function gen_win_pieces(){
     //console.log(winning_combo);
 }
 
-// Draws the right panel items:
-// = " ? " Button for game directions
-// - "Submit" guess button
-// - TODO Initialize game piece buttons to send colors direct to guess area
+
+
+// function init_right_panel_elements initialized the right game panel items
+// :params: None
+// :return: none
 function init_right_panel_elements() {
     // Column reverse ordering at this time has priority on the CSS:
     let r_panel = document.getElementById('right-game-panel')
@@ -337,6 +360,7 @@ function init_right_panel_elements() {
     clr_btn_ctnr.id = "color_btn_container"
     r_panel.appendChild(clr_btn_ctnr)
 
+    // Create a center dotted box area for the "selected" area to give feedback about selected piece
     let color_btn_ctnr = document.getElementById("color_btn_container")
     let feed_back_area = document.createElement("div");
     feed_back_area.id = "feed-back-text"
@@ -350,7 +374,6 @@ function init_right_panel_elements() {
     div2.setAttribute('title', 'Game directions');
     div2.innerText = "?"
     r_panel.appendChild(div2)
-
 }
 
 
@@ -412,10 +435,7 @@ function validate_move() {
         }
     }
 
-    //console.log("length winning combo interim ", winning_combo_spread.length)
-    //console.log("row combo INTERIM: ", row_combo);
-    //console.log("winning_combo_spread INTERIM: ", winning_combo_spread);
-    // Now search for general matches (same color, wrong position)
+    // Now search for general matches (same color, wrong position)"
     for (let i = 0; i < winning_combo_spread.length; i++ ){
         if (row_combo.indexOf(winning_combo_spread[i]) != -1) {
             let pop_index = row_combo.indexOf(winning_combo_spread[i])
@@ -533,10 +553,10 @@ function prompt_replay() {
     document.getElementById('new_game_btn').addEventListener("click", () => {select_difficulty()});
 }
 
-
-// Create event listeners for all possible game piece placement locations:
-// Handle placing game-pieces on game-board if user drops a piece onto board with mouse cursor
-// Handle removing game pieces if user clicks on already placed piece
+// function listen_gameboard adds event listeners to the gameboard elements to listen for user
+// mouse clicks and key presses (where the user can place pieces)
+// :params: None
+// :return: none
 function listen_gameboard(){
     //let str_turn = current_turn.toString()
     let all_pieces = document.querySelectorAll('[p_num]')
@@ -568,9 +588,19 @@ function listen_gameboard(){
 }
 
 
-// Function to listen for and to handle mouse and keyboard events.
+// function standby_game adds event listeners to the gameboard elements to listen for user
+// mouse clicks and key presses (on the other elements)
+// :params: None
+// :return: none
 function standby_game() {
+    listen_left_panel();
+    listen_guess_btn();
+    listen_directions_btn();
+    create_bindings();          // Create hotkey bindings
+    listen_gameboard();         // Listen where the user can place pieces
+}
 
+function listen_left_panel() {
     //handle user picking up game piece on left panel
     document.getElementById('left-game-panel').addEventListener("click", function(event) {
         //console.dir(event.target.getAttribute('color'));  // use this in chrome
@@ -587,7 +617,9 @@ function standby_game() {
             color_feedback.style.background = '';
         }
     });
+}
 
+function listen_guess_btn() {
     // Handle mouse clicks on guess button:
     document.getElementById('submit_btn').addEventListener("click", function(event) {
         //console.dir(event.target.getAttribute('color'));  // use this in chrome
@@ -613,18 +645,18 @@ function standby_game() {
             event.target.style.background = "darkgreen";
             event.target.innerText = "Guess!"
         }
-
     });
+}
 
+function listen_directions_btn() {
     //handle mouse clicks on direction area
-    document.getElementById('directions_btn').addEventListener("click", function(event) {
+    document.getElementById('directions_btn').addEventListener("click", function (event) {
         show_directions()
     });
-
-    create_bindings()
-
-    listen_gameboard()
 }
+
+
+
 
 //let colors = ['DeNada', 'red', 'green', 'blue', 'orange', 'violet', 'yellow', 'square', 'diamond', 'asterisk', 'cro
 function create_bindings() {
@@ -653,42 +685,66 @@ function create_bindings() {
     }, true);
 }
 
-
+// function show_directions draws the game directions menu, and restores the game from it's saved state
+// when the directions menu is closed.
+// :params: None
+// :return: none
 function show_directions() {
     let gameBoard = document.getElementById('game-container')
-    let divArray = ['DeNada']
-
     let nodeListLength = gameBoard.children.length
 
+    // Save gameboard elements into divArray:
+    let divArray = save_game_state(gameBoard, nodeListLength);
+
+    // Create the instructions menu:
+    initialize_directions(gameBoard);
+
+    create_hidden(gameBoard);  // Handle if user clicks on a game-pice with directions open
+
+    handle_close_directions(gameBoard, nodeListLength, divArray)
+
+}
+
+// function save_game_state will save the current game board, so that the directions menu
+// can be displayed, and the game board restored later from it's saved state.
+// :param board: DOM reference to the game-container DIV element
+// :return: divArray_temp (type array), an array of the saved HTML elements of the current game state
+function save_game_state(board, nodeLength) {
+    let divArray_temp = ['DeNada']
     // Save the center game board and right panel into an array of DIVs
-    //console.log(gameBoard.childNodes.length)
-    for (let index = 1; index < nodeListLength; index++)
-    {
-        divArray.push(gameBoard.children[index])
-    }
 
+    for (let index = 1; index < nodeLength; index++)
+    {
+        divArray_temp.push(board.children[index])
+    }
     // delete the gameBoard center panel and the right panel
-    for (let index = 1; index < nodeListLength; index++)
+    for (let index = 1; index < nodeLength; index++)
     {
-        gameBoard.children[1].remove();
+        board.children[1].remove();
     }
+    return divArray_temp
+}
 
-
+function initialize_directions(board) {
     let instructDIV = document.createElement("div")
-    gameBoard.appendChild(instructDIV)
-    gameBoard.children[1].id = "instructions-panel"
-
+    board.appendChild(instructDIV)
+    board.children[1].id = "instructions-panel"
     let directions = document.createElement("div")
-    //gameBoard.appendChild(directions)
-    gameBoard.children[1].appendChild(directions)
-    gameBoard.children[1].children[0].id = "written-directions"
-    gameBoard.children[1].children[0].innerHTML =
-        "<br><b>Game Instructions:</b> <p>There are 4 randomly chosen colors on the top row (hidden). This is the code created by the CPU. You are the codebreaker and must guess this code in as few turns as possible." +
-        "<p>1) The other empty rows are the amount of turns you have to correctly guess the colors and their correct position." +
+    board.children[1].appendChild(directions)
+    board.children[1].children[0].id = "written-directions"
+    board.children[1].children[0].innerHTML =
+        "<br><b>Game Instructions:</b> <p>There are 4 randomly chosen colors on the top row (hidden). " +
+        "This is the code created by the CPU. You are the codebreaker and must guess this code in as few " +
+        "turns as possible." +
+        "<p>1) The other empty rows are the amount of turns you have to correctly guess the colors and " +
+        "their correct position." +
         "<p>2) Try picking up game pieces and placing them on the current row where it is your turn." +
         "<p>3) If you think you have a good guess, hit submit." +
-        "<p>4) You will receive feedback from the CPU. A black dot means you guessed a correct color AND position. A white dot means you guessed a correct color, but it's in the wrong position. An empty dot means that one of your colors you guessed is not in the secret code." +
-        "<p>5) If you guessed the 4 correct colors and 4 correct positions before running out of turns, you win! If you run out of turns to guess, you lose." +
+        "<p>4) You will receive feedback from the CPU. A black dot means you guessed a correct color AND position. " +
+        "A white dot means you guessed a correct color, but it's in the wrong position. An empty dot means that one of " +
+        "your colors you guessed is not in the secret code." +
+        "<p>5) If you guessed the 4 correct colors and 4 correct positions before running out of turns, you win! If " +
+        "you run out of turns to guess, you lose." +
         "<p>6) Choose you difficulty level and play again!" +
         "<br><b><p>Gamepiece Selection Hotkeys:</p></b>" +
         "<p>&#8226;<b>R</b> - Red</p>" +
@@ -702,49 +758,47 @@ function show_directions() {
         "<p>&#8226;<b>A</b> - Asterisk</p>" +
         "<p>&#8226;<b>C</b> - Cross</p>" +
         "<p>&#8226;<b>Escape</b> - Deselect</p>" +
-        "<p>&#8226; Want to learn more? Read about Mastermind with <a href='https://en.wikipedia.org/wiki/Mastermind_(board_game)' target='_new' title='Mastermind Wikipedia Page'>THIS</a> Wikepedia link.</p>" +
-        "<p>&#8226; Visual learner? Click <a href='https://www.youtube.com/watch?v=dMHxyulGrEk' target='_new' title='Youtube link'>HERE</a> to watch an instructional video on Youtube.</p>"
-
-
-
-
+        "<p>&#8226; Want to learn more? Read about Mastermind with " +
+        "<a href='https://en.wikipedia.org/wiki/Mastermind_(board_game)' target='_new'" +
+        " title='Mastermind Wikipedia Page'>THIS</a> Wikepedia link.</p>" +
+        "<p>&#8226; Visual learner? Click <a href='https://www.youtube.com/watch?v=dMHxyulGrEk' target='_new' " +
+        "title='Youtube link'>HERE</a> to watch an instructional video on Youtube.</p>"
     let close = document.createElement("div")
-    //gameBoard.appendChild(close)
-    gameBoard.children[1].appendChild(close)
-    gameBoard.children[1].children[1].id = "close-directions"
-    gameBoard.children[1].children[1].innerText = "X"
-    gameBoard.children[1].children[1].setAttribute('title', `Close directions`);
+    board.children[1].appendChild(close)
+    board.children[1].children[1].id = "close-directions"
+    board.children[1].children[1].innerText = "X"
+    board.children[1].children[1].setAttribute('title', `Close directions`);
+}
 
-    // Create a hidden, unused feedback area, so if user clicks a game piece while directions are open,
-    // THen game does not output error message to console.
+// Create a hidden, unused feedback area, in event user clicks a game piece while directions are open.
+// Prevents developer console error message: "Cannot read property 'style' of null"
+function create_hidden(board) {
     let feedbackHidden = document.createElement("div")
     feedbackHidden.id = "feed-back-text"
     feedbackHidden.style.width = '0px';
     feedbackHidden.style.height = '0px';
-    gameBoard.children[1].appendChild(feedbackHidden)
+    board.children[1].appendChild(feedbackHidden)
+}
 
+function handle_close_directions(board, listLength, div_array) {
     // Await user to click on the "X" to close directions
     document.getElementById('close-directions').addEventListener("click", function(event) {
         // Delete the instructions DIV node:
-        gameBoard.children[1].remove();
+        board.children[1].remove();
 
         // rebuild the gameBoard center panel and the right panel
-        for (let index = 1; index < nodeListLength; index++)
+        for (let index = 1; index < listLength; index++)
         {
-            gameBoard.appendChild(divArray[index]);
+            board.appendChild(div_array[index]);
         }
     });
-
 }
-
 function backgroundMS() {
     fetch('https://nature-image-web-scraper.wl.r.appspot.com/a-nature-image',
         {method: 'GET'})
         .then(response => response.json())
-        .then(data => applyBackground(data.imageUrl));
-
-    function applyBackground(theURL) {
-        console.log(theURL)
+        .then(data => apply_background(data.imageUrl));
+    function apply_background(theURL) {
         const page_body = document.body
         page_body.style.backgroundImage = `url(${theURL})`;
     }
