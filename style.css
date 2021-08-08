@@ -160,6 +160,7 @@ div[row_number]:nth-of-type(even) {
     display: flex;
     flex: 0 0 auto;
     background: url("assets/images/leatherTex_small.jpg");
+    color: #d5ffb3;
     flex-direction: row;
     height: 10%;
     width: 60%;

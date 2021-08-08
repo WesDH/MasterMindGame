@@ -8,23 +8,21 @@ Instructions: There are 4 randomly chosen colors on the top row (hidden).
 5) If you guessed to correct colors and positions before running out of turns, you win! If you run out of turns to guess, you lose.
 
 
-Credits:
+Credits for assets used:
+
 Spherical gamepieces:
 Author: Cethiel
 Link: https://opengameart.org/content/orbs-collection
 
-Diamond gamepiece:
-Author: PunyGames
-Link: https://opengameart.org/content/gemstones
+Square and Diamond gamepieces:
+Author: Prdatur
+Link: https://opengameart.org/content/basic-gems-icon-set-remix
 
-Square gamepiece:
-Author: Kenney
-Link: https://opengameart.org/content/isometric-blocks
+Cross gamepiece:
+Author: Cethiel
+Link: https://opengameart.org/content/pickup-items-icons
 
-Diamond gamepiece:
-Author: PunyGames
-Link: https://opengameart.org/content/gemstones
+Feedback gamepieces:
+Author: andi
+Link: https://opengameart.org/content/checkers
 
-Diamond gamepiece:
-Author: PunyGames
-Link: https://www.iconfinder.com/icons/35697/asterisk_orange_icon
