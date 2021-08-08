@@ -1,6 +1,6 @@
 // Define GLOBAL scope variables:
-let pieces = 6;  // Planned option to increase/decrease this later to change difficulty (MAX colors: 10)
-let turns = 10;  // Planned option to increase/decrease this later to change difficulty
+let pieces = 10;  // Default difficulty select 10
+let turns = 10;  // Default difficulty turns 10
 let game_state = "unfinished";
 let current_turn = 1;
 let colors = ['DeNada', 'red', 'green', 'blue', 'orange', 'violet', 'yellow', 'square', 'diamond', 'asterisk', 'cross']
@@ -154,11 +154,11 @@ function handle_color_select(game_container) {
     }
     // }
     //
-    // Default set color difficulty to 10 and have this button selected:
-    pieces = 6
-    game_container.children[2].children[3].style.background = "url('assets/images/btn_select.png')";
-    game_container.children[2].children[3].style.backgroundRepeat = "no-repeat";
-    game_container.children[2].children[3].style.backgroundSize = "100% 100%";
+    // Default set pieces difficulty to 10 and have this button selected:
+    pieces = 10
+    game_container.children[2].children[7].style.background = "url('assets/images/btn_select.png')";
+    game_container.children[2].children[7].style.backgroundRepeat = "no-repeat";
+    game_container.children[2].children[7].style.backgroundSize = "100% 100%";
 
     // Listen for click on difficulty select buttons and update difficulty setting for TURN:
     game_container.children[2].addEventListener("click", function(event) {
