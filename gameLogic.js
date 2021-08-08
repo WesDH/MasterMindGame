@@ -19,7 +19,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 // Function to draw the difficulty select screen
 function select_difficulty() {
-    //backgroundMS()
+    backgroundMS()
     let game_container = document.getElementById("game-container");
     game_container.innerHTML = "" // Reset game board
     game_container.style.justifyContent = "space-evenly"
@@ -575,7 +575,7 @@ function listen_gameboard(){
 
                 // Place the selected game piece on the guess row:
                 event.target.style.background = `no-repeat url('assets/game_pieces/${gp_color}.png') center`;
-                event.target.style.backgroundSize = "45%";
+                event.target.style.backgroundSize = "55%";
                 event.target.setAttribute('color_choice', `${gp_color}`)
             } else if (event.target.getAttribute('t_num') == current_turn.toString()
                 && document.body.style.cursor === "") {
@@ -662,26 +662,50 @@ function listen_directions_btn() {
 function create_bindings() {
     // Handle user having a game piece picked up and user hits "escape", then drop the game piece
     window.addEventListener("keydown", function(event) {
-        let feedback_Area = document.getElementById('feed-back-text')
+        let feedback_Area = document.getElementById('feed-back-text');
         if (`${event.key}` == "Escape") { document.body.style.cursor = "" }
         else if (`${event.key}` == "r") {
-            document.body.style.cursor = `url('assets/game_pieces/red.png'), pointer`
+            document.body.style.cursor = `url('assets/game_pieces/red.png'), pointer`;
             feedback_Area.style.background = `url('assets/game_pieces/red.png') center center / contain no-repeat`;
         } else if (`${event.key}` == "g") {
-            document.body.style.cursor = `url('assets/game_pieces/green.png'), pointer`
+            document.body.style.cursor = `url('assets/game_pieces/green.png'), pointer`;
             feedback_Area.style.background = `url('assets/game_pieces/green.png') center center / contain no-repeat`;
         } else if (`${event.key}` == "b") {
-            document.body.style.cursor = `url('assets/game_pieces/blue.png'), pointer`
+            document.body.style.cursor = `url('assets/game_pieces/blue.png'), pointer`;
             feedback_Area.style.background = `url('assets/game_pieces/blue.png') center center / contain no-repeat`;
         }
-        else if (`${event.key}` == "o"){ document.body.style.cursor = `url('assets/game_pieces/orange.png'), pointer` }
-        else if (`${event.key}` == "v" && pieces >= 5){ document.body.style.cursor = `url('assets/game_pieces/violet.png'), pointer` }
-        else if (`${event.key}` == "p" && pieces >= 5){ document.body.style.cursor = `url('assets/game_pieces/violet.png'), pointer` }
-        else if (`${event.key}` == "y" && pieces >= 6){ document.body.style.cursor = `url('assets/game_pieces/yellow.png'), pointer` }
-        else if (`${event.key}` == "s" && pieces >= 7){ document.body.style.cursor = `url('assets/game_pieces/square.png'), pointer` }
-        else if (`${event.key}` == "d" && pieces >= 8){ document.body.style.cursor = `url('assets/game_pieces/diamond.png'), pointer` }
-        else if (`${event.key}` == "a" && pieces >= 9){ document.body.style.cursor = `url('assets/game_pieces/asterisk.png'), pointer` }
-        else if (`${event.key}` == "c" && pieces >= 10){ document.body.style.cursor = `url('assets/game_pieces/cross.png'), pointer` }
+        else if (`${event.key}` == "o"){
+            document.body.style.cursor = `url('assets/game_pieces/orange.png'), pointer`;
+            feedback_Area.style.background = `url('assets/game_pieces/orange.png') center center / contain no-repeat`;
+        }
+        else if (`${event.key}` == "v" && pieces >= 5){
+            document.body.style.cursor = `url('assets/game_pieces/violet.png'), pointer`;
+            feedback_Area.style.background = `url('assets/game_pieces/violet.png') center center / contain no-repeat`;
+        }
+        else if (`${event.key}` == "p" && pieces >= 5){
+            document.body.style.cursor = `url('assets/game_pieces/violet.png'), pointer`;
+            feedback_Area.style.background = `url('assets/game_pieces/violet.png') center center / contain no-repeat`;
+        }
+        else if (`${event.key}` == "y" && pieces >= 6){
+            document.body.style.cursor = `url('assets/game_pieces/yellow.png'), pointer`;
+            feedback_Area.style.background = `url('assets/game_pieces/yellow.png') center center / contain no-repeat`;
+        }
+        else if (`${event.key}` == "s" && pieces >= 7){
+            document.body.style.cursor = `url('assets/game_pieces/square.png'), pointer`;
+            feedback_Area.style.background = `url('assets/game_pieces/square.png') center center / contain no-repeat`;
+        }
+        else if (`${event.key}` == "d" && pieces >= 8){
+            document.body.style.cursor = `url('assets/game_pieces/diamond.png'), pointer`;
+            feedback_Area.style.background = `url('assets/game_pieces/diamond.png') center center / contain no-repeat`;
+        }
+        else if (`${event.key}` == "a" && pieces >= 9){
+            document.body.style.cursor = `url('assets/game_pieces/asterisk.png'), pointer`;
+            feedback_Area.style.background = `url('assets/game_pieces/asterisk.png') center center / contain no-repeat`;
+        }
+        else if (`${event.key}` == "c" && pieces >= 10){
+            document.body.style.cursor = `url('assets/game_pieces/cross.png'), pointer`;
+            feedback_Area.style.background = `url('assets/game_pieces/cross.png') center center / contain no-repeat`;
+        }
     }, true);
 }
 

@@ -159,12 +159,13 @@ div[row_number]:nth-of-type(even) {
 #key-panel{
     display: flex;
     flex: 0 0 auto;
-    background: maroon;
+    background: url("assets/images/leatherTex_small.jpg");
     flex-direction: row;
     height: 10%;
     width: 60%;
     border-left: 1px solid black;
     border-right: 1px solid black;
+    border-bottom: 1px solid black;
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -276,9 +277,9 @@ div[arrow] {
 }
 
 div[p_num] {
-background-color: rgba(0, 255, 180, 0.06);
-border-left: 1px solid black;
-width: 16%;
+/*background-color: rgba(0, 255, 180, 0.06);*/
+    border-left: 1px solid black;
+    width: 16%;
 }
 
 div[peg_placement_area] {
@@ -286,7 +287,7 @@ div[peg_placement_area] {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 255, 0.06);
+    background-color: rgba(0, 0, 255, 0.1);
     border-left: 1px solid black;
     max-width: 17%;
     min-width: 17%;
@@ -315,7 +316,7 @@ div[peg_placement_area] {
 
 
     width: 75%;
-    height: 75%;
+    height: 65%;
     border: 1px dotted black;
 }
 
@@ -384,7 +385,7 @@ mark {
     background: darkgreen;
     border: 1px solid black;
     width: 50%;
-    height: 5%;
+    height: 14%;
 }
 
 

@@ -1,5 +1,3 @@
-(A work in progress)
-
 MasterMind, a puzzle solving game in development for summer 2021.
 
 Instructions: There are 4 randomly chosen colors on the top row (hidden).
@@ -8,3 +6,25 @@ Instructions: There are 4 randomly chosen colors on the top row (hidden).
 3) If you think you have a good guess, hit submit.
 4) You will receive feedback from the CPU (a black dot means you guessed a correct color and position, a white dot means you guessed a correct color, but it's in the wrong position.)
 5) If you guessed to correct colors and positions before running out of turns, you win! If you run out of turns to guess, you lose.
+
+
+Credits:
+Spherical gamepieces:
+Author: Cethiel
+Link: https://opengameart.org/content/orbs-collection
+
+Diamond gamepiece:
+Author: PunyGames
+Link: https://opengameart.org/content/gemstones
+
+Square gamepiece:
+Author: Kenney
+Link: https://opengameart.org/content/isometric-blocks
+
+Diamond gamepiece:
+Author: PunyGames
+Link: https://opengameart.org/content/gemstones
+
+Diamond gamepiece:
+Author: PunyGames
+Link: https://www.iconfinder.com/icons/35697/asterisk_orange_icon
