@@ -1,33 +1,36 @@
-/*
+/*******************
 Author: Wesley Havens
 Date: August 8th, 2021
 Title: MasterMind Board Game
-Description: This is the primary logic file for the boardgame. The game is handled via Javascript DOM insertion.
-*/
+Description: This is the primary logic file for the board game. The game board is initialized and
+             modified via Javascript DOM manipulation.
 
+******************/
 
 // Define GLOBAL scope variables:
-let pieces = 10;  // Default difficulty select 10
-let turns = 10;  // Default difficulty turns 10
+let pieces = 10;  // Default # of game pieces = 10
+let turns = 10;   // Default   #   of  turns  = 10
 let game_state = "unfinished";
 let current_turn = 1;
 let colors = ['DeNada', 'red', 'green', 'blue', 'orange', 'violet', 'yellow', 'square', 'diamond', 'asterisk', 'cross']
 let winning_combo = [];
+let first_pass = true;
 // End GLOBAL variable definitions
 
-
-// Callback function on page load, initialize the difficulty selection menu
-// :params: None
-// :return: none
+/* Callback function on page load, initialize the difficulty selection menu
+ :params: None
+ :return: none */
 window.addEventListener('DOMContentLoaded', (event) => {
     select_difficulty()
-
 });
 
-
-// Function to draw the difficulty select screen
+/* Function to draw the difficulty select screen
+ :params: None
+ :return: none */
 function select_difficulty() {
-    backgroundMS()
+    background_microservice()       // Call microService to receive a random nature image
+
+    // Set up a blank game container:
     let game_container = document.getElementById("game-container");
     game_container.innerHTML = "" // Reset game board
     game_container.style.justifyContent = "space-evenly"
@@ -40,20 +43,23 @@ function select_difficulty() {
     button.setAttribute("start_select_area", "")
     handle_start_select(game_container);
 
-    // Create and handle user clicks on TURN difficulty select area
+    // Create and handle user clicks on TURN difficulty select area:
     let dif_sect = document.createElement("section");
     game_container.appendChild(dif_sect);
     game_container.children[1].setAttribute("turn_difficulty_select_area", "")
     handle_turn_select(game_container)
 
-    // Create and handle user clicks on COLORS difficulty select area
+    // Create and handle user clicks on COLORS difficulty select area:
     let dif_sect1 = document.createElement("section");
     game_container.appendChild(dif_sect1);
     game_container.children[2].setAttribute("color_difficulty_select_area", "")
     handle_color_select(game_container)
+
 }
 
-// Handle user clicks on the start select button
+/* Handle user clicks on the start select button
+ :params: game-container DIV element
+ :return: none */
 function handle_start_select(game_container) {
     // Listen for click on difficulty select buttons and update difficulty setting for TURN:
     game_container.children[0].addEventListener("click", function(event) {
@@ -72,12 +78,40 @@ function handle_start_select(game_container) {
     });
 }
 
-// Handle user clicks on the turn select area of the difficult select screen
+/* Handle user clicks on the turn select area of the difficult select screen
+ :params: game-container DIV element
+ :return: none */
 function handle_turn_select(game_container) {
+    draw_turn_gradient(game_container)
+    draw_turn_btns(game_container)
+
+    // Listen for click on difficulty select buttons and update difficulty setting for TURN:
+    game_container.children[1].addEventListener("click", function(event) {
+        if (event.target.tagName === 'DIV') {
+            // "Deselect" all buttons
+            for(let i = 9; i >= 1; i--) {
+                setBackground(game_container.children[1].children[i],
+                    "url('assets/images/btn.png')",
+                    "no-repeat",
+                    "100% 100%")
+            }
+            turns = parseInt(event.target.innerText)  // set the turns variable to the button's difficulty clicked
+            // Select the clicked button:
+            setBackground(event.target, "url('assets/images/btn_select.png')", "no-repeat", "100% 100%")
+        }
+    });
+}
+
+/* Function to draw the difficulty gradient and text overlay for the turn select area
+ :params: game-container DIV element
+ :return: none */
+function draw_turn_gradient(game_container) {
+    // Create the difficulty gradient image:
     let difficulty_img = document.createElement("section");
     game_container.children[1].appendChild(difficulty_img);
     game_container.children[1].children[0].setAttribute("difficulty_image", "")
 
+    // Create text overlay for the difficulty gradient image:
     let easy = document.createElement("section");
     let name = document.createElement("section");
     let hard = document.createElement("section");
@@ -87,7 +121,15 @@ function handle_turn_select(game_container) {
     game_container.children[1].children[0].children[0].innerHTML = "Easier";
     game_container.children[1].children[0].children[1].innerHTML = "(Number of Turns)";
     game_container.children[1].children[0].children[2].innerHTML = "More Difficult";
+}
 
+/*
+Function to draw the 14 turn buttons for difficulty select menu.
+
+:params: game-container DIV element
+:return: none
+*/
+function draw_turn_btns(game_container) {
     // Draw the 14 difficulty select TURN buttons:
     for (let t = 14; t >= 6; t--) {
         let game_container = document.getElementById("game-container");
@@ -102,116 +144,105 @@ function handle_turn_select(game_container) {
         "url('assets/images/btn_select.png')",
         "no-repeat",
         "100% 100%")
-
-    // Listen for click on difficulty select buttons and update difficulty setting for TURN:
-    game_container.children[1].addEventListener("click", function(event) {
-
-        if (event.target.tagName === 'DIV') {
-
-            // "Deselect" all buttons
-            for(let i = 9; i >= 1; i--) {
-                setBackground(game_container.children[1].children[i],
-                    "url('assets/images/btn.png')",
-                    "no-repeat",
-                    "100% 100%")
-            }
-
-            turns = parseInt(event.target.innerText)  // set the turns variable to the button's difficulty clicked
-
-            // Select the clicked button
-            setBackground(event.target, "url('assets/images/btn_select.png')", "no-repeat", "100% 100%")
-        }
-
-    });
 }
 
-// Helper function setBackground applies CSS background styling to the target element
-function setBackground (target, theURL, repeat, size) {
-    target.style.background = `${theURL}`;
-    target.style.backgroundRepeat = `${repeat}`;
-    target.style.backgroundSize = `${size}`;
-
-}
-
-
-// Handle user clicks on the turn select area of the difficult select screen
+/*
+Handle user clicks on the color select area of the difficulty select screen
+:params: game-container DIV element
+:return: none
+*/
 function handle_color_select(game_container) {
-    let difficulty_img = document.createElement("section");
-    game_container.children[2].appendChild(difficulty_img);
-    game_container.children[2].children[0].setAttribute("difficulty_image", "")
-    let easy = document.createElement("section");
-    let name = document.createElement("section");
-    let hard = document.createElement("section");
-    //game_container.children[2].children[0].innerHTML = "color choices";
-    game_container.children[2].children[0].appendChild(easy)
-    game_container.children[2].children[0].appendChild(name)
-    game_container.children[2].children[0].appendChild(hard)
-    game_container.children[2].children[0].children[0].innerText = "Easier";
-    game_container.children[2].children[0].children[1].innerHTML = "(Color Choices)";
-    game_container.children[2].children[0].children[2].innerText = "More Difficult";
-
-
-    //
-    //
-    // Draw the 10 difficulty select COLOR buttons:
-    for (let c = 4; c <= 10; c++) {
-        let game_container = document.getElementById("game-container");
-        let button = document.createElement("div");
-        game_container.children[2].appendChild(button);
-        button.textContent = `${c}`
-    }
-    // }
-    //
-    // Default set pieces difficulty to 10 and have this button selected:
-    pieces = 10
-    game_container.children[2].children[7].style.background = "url('assets/images/btn_select.png')";
-    game_container.children[2].children[7].style.backgroundRepeat = "no-repeat";
-    game_container.children[2].children[7].style.backgroundSize = "100% 100%";
+    draw_color_gradient(game_container)
+    draw_color_btns(game_container)
 
     // Listen for click on difficulty select buttons and update difficulty setting for TURN:
     game_container.children[2].addEventListener("click", function(event) {
-
         if (event.target.tagName === 'DIV') {
-
-            // "Deselect" all buttons
+            // "Deselect" all buttons:
             for(let i = 1; i <= 7; i++) {
                 game_container.children[2].children[i].style.background = "url('assets/images/btn.png')";
                 game_container.children[2].children[i].style.backgroundRepeat = "no-repeat";
                 game_container.children[2].children[i].style.backgroundSize = "100% 100%";
             }
 
-            //console.log(event.target.innerText);
-            pieces = parseInt(event.target.innerText)  // set the turns variable to the button's difficulty clicked
+            pieces = parseInt(event.target.innerText)  // set the pieces variable to the button's difficulty clicked
 
-            // Select the clicked button
+            // Select the "clicked" button:
             event.target.style.background = "url('assets/images/btn_select.png')";
             event.target.style.backgroundRepeat = "no-repeat";
             event.target.style.backgroundSize = "100% 100%";
-
         }
-
     });
 }
 
+/*
+Function to draw the difficulty gradient and text overlay for the COLOR select area
+:params: game-container DIV element
+:returns: none
+*/
+function draw_color_gradient(game_container) {
+    // Create the color gradient area for easy to hard.
+    let difficulty_img = document.createElement("section");
+    game_container.children[2].appendChild(difficulty_img);
+    game_container.children[2].children[0].setAttribute("difficulty_image", "")
 
-// Function to draw the base game board.
+    // Create text overlay for the difficulty gradient image:
+    let easy = document.createElement("section");
+    let name = document.createElement("section");
+    let hard = document.createElement("section");
+    game_container.children[2].children[0].appendChild(easy)
+    game_container.children[2].children[0].appendChild(name)
+    game_container.children[2].children[0].appendChild(hard)
+    game_container.children[2].children[0].children[0].innerText = "Easier";
+    game_container.children[2].children[0].children[1].innerHTML = "(Color Choices)";
+    game_container.children[2].children[0].children[2].innerText = "More Difficult";
+}
+
+/*
+Function to draw the 10 COLOR buttons for difficulty select menu.
+:params: game-container DIV element
+:returns: none
+*/
+function draw_color_btns(game_container) {
+    // Draw the [4 to 10] difficulty select: # of COLOR buttons:
+    for (let c = 4; c <= 10; c++) {
+        let game_container = document.getElementById("game-container");
+        let button = document.createElement("div");
+        game_container.children[2].appendChild(button);
+        button.textContent = `${c}`
+    }
+
+    // Default set pieces difficulty to 10 and have this button selected:
+    pieces = 10
+    game_container.children[2].children[7].style.background = "url('assets/images/btn_select.png')";
+    game_container.children[2].children[7].style.backgroundRepeat = "no-repeat";
+    game_container.children[2].children[7].style.backgroundSize = "100% 100%";
+}
+
+/*
+Function to draw the base game board
+:params: game-container DIV element
+:returns: none
+*/
 function init_game_board() {
     winning_combo = []         // Reset winning combo
     current_turn = 1           // Reset turns
     game_state = "unfinished"  // Reset game state
-    // [Left column placement]
+
+    // [Left game panel creation]:
     let left_game_panel = document.createElement("div");
     let game_container = document.getElementById("game-container");
-    game_container.innerHTML = "" // Reset game board
+    game_container.innerHTML = "" // Clear the game board
 
+    // Apply different CSS styling from the difficulty select menu prior:
     game_container.style.justifyContent = "start"
     game_container.style.alignContent = "normal"
 
     game_container.appendChild(left_game_panel)
     game_container.children[0].id = "left-game-panel";
 
-    // [Center column placement]:
-    // Create the game guessing rows, number of rows drawn equals number of TURNS player selected
+    // [Center Column Creation] (1 of 2)
+    // Creates the game guessing rows, where number of rows drawn equals number of TURNS player selected
     for (let row = 1; row <= turns; row++) {
         let game_row = document.createElement("div");
         let game_container = document.getElementById("game-container");
@@ -221,14 +252,12 @@ function init_game_board() {
         // the game row area gets 90% (key panel already takes 10%), then divide this 90% by # of TURNS.
         // Prevents a row from growing too tall relative to the other rows.
         let row_height = 90 / turns
-        game_container.children[row].style.maxHeight = `${row_height}%`
+        game_container.children[row].style.maxHeight = `${row_height}%` //CSS styling to row height by a %'age
 
         // Initialize the individual sub-elements for each row:
         draw_game_row_elements(row)
     }
-
-
-    // [Center column placement]:
+    // [Center column creation] (2 of 2)
     // The center column of game_container will fill to 100% with key_panel
     // and already placed game guessing rows:
     let key_panel = document.createElement("div");
@@ -237,51 +266,57 @@ function init_game_board() {
     game_container.children[turns + 1].innerHTML = "Welcome to<br>MASTERMIND GAME<br>Can you crack the code?"
 
     // [Right column placement]
-    // This will display on a new "rightmost" column based on CSS filling center column already
+    // This will display on a new "rightmost" column based on CSS flex filling center column already
     let right_game_panel = document.createElement("div");
     game_container.appendChild(right_game_panel);
     game_container.children[turns + 2].id = "right-game-panel";
 
-    // Draw the selectable game pieces on the left column:
-    draw_piece_choices()
-    gen_win_pieces()
-    init_right_panel_elements()
+    draw_piece_choices()     // To draw the selectable game pieces on the left column
+    gen_win_pieces()         // Randomly generate a secret combination of pieces
+    init_right_panel_elements() // To draw the right panel elements
 }
 
-// Sub function for init_game_board()
-// Param: row: type string, current "guess area" row being initialized
-// Initialize each game row's child elements:
-// Each game row consists of:
-// - Current turn arrow indicator
-// - Four user game piece placement spots
-// - Four small feed back peg squares
+/*
+Function draw_game_row_elements is a sub function for init_game_board()
+Initializes each game row's child elements:
+Each game row consists of:
+- Current turn green arrow indicator placeholder
+- Four empty game piece placement squares
+- Peg feedback area:
+-         |----> 4 small empty feedback circles
+:params: row: type string, current "guess area" row being initialized
+:returns: none
+*/
 function draw_game_row_elements(row) {
+    // Select the current row based on the row number passed in:
     let row_string = row.toString();
     let cur_game_row = document.querySelectorAll(`[row_number=${CSS.escape(row_string)}]`);
+
+    // Initialize for the current row:
+    // 1) Green arrow placement area
+    // 2) The 4 squares where user can place a guess:
+    // 3) Peg feed back area
     for (let col = 1; col <= 6; col++) {
-        if (col === 1) {
+        if (col === 1) { // Draw the green arrow placeholder area, and ONLY draw the green arrow for the first turn:
             let green_arrow_area = document.createElement("div");
             cur_game_row[0].appendChild(green_arrow_area)
             let green_arrow = cur_game_row[0].querySelectorAll("div");
             green_arrow[0].setAttribute("t_num", `${row}`);
             if (col == 1 && row == 1) {
-                //green_arrow[0].setAttribute("hidden", "false");
                 green_arrow[0].setAttribute("arrow", "green");
                 green_arrow[0].style.background = "no-repeat url('assets/images/green_arrow.png') center";
                 green_arrow[0].style.backgroundSize = "contain"
             } else {
-                //green_arrow[0].setAttribute("null", "");
                 green_arrow[0].setAttribute("arrow", "null");
                 green_arrow[0].innerHTML = ""
             }
 
-        } else if (col == 6) {
-            // create the 4 peg feedback areas
+        } else if (col === 6) { // Create the peg feedback placement area:
             let piece_placement_area = document.createElement("div");
             cur_game_row[0].appendChild(piece_placement_area)
             let cur_piece_area = cur_game_row[0].querySelectorAll("div");
             cur_piece_area[col-1].setAttribute("peg_placement_area", `${col - 1}`);
-            for (let i = 1; i < 5; i++) {
+            for (let i = 1; i < 5; i++) { // create the small 4 peg feedback circles:
                 let peg_feedback = document.createElement("div");
                 peg_feedback.setAttribute("t_num", `${row}`);
                 peg_feedback.setAttribute("feedback_num", `${i}`);
@@ -290,70 +325,77 @@ function draw_game_row_elements(row) {
                 peg_feedback.id = 'peg_feedback'
                 cur_piece_area[col-1].appendChild(peg_feedback)
             }
-            //cur_piece_area[col-1].setAttribute("turn_number", `${col}`);
-        } else {
-            // Create the four game piece placement areas
+        } else { // Create the four game piece placement areas:
             let piece_placement_area = document.createElement("div");
             cur_game_row[0].appendChild(piece_placement_area)
             let cur_piece_area = cur_game_row[0].querySelectorAll("div");
-            cur_piece_area[col-1].setAttribute("p_num", `${col - 1}`);
-            cur_piece_area[col-1].setAttribute("t_num", `${row}`);
+            cur_piece_area[col-1].setAttribute("p_num", `${col - 1}`);  // piece number left to right
+            cur_piece_area[col-1].setAttribute("t_num", `${row}`);      // Turn number equals the row
             cur_piece_area[col-1].setAttribute("color_choice", "None");
         }
     }
 }
 
-// Draw the pieces that the player can select from the LEFT panel and place on the guess area
+/*
+Draw the pieces that the player can select from the LEFT panel
+:params: none
+:returns: none
+*/
 function draw_piece_choices() {
-
     let left_panel = document.getElementById("left-game-panel");
 
+    // Add a "padder" section to move the game pieces vertically down a bit with CSS
     let section_padder = document.createElement("section");
     section_padder.id = 'L_panel_top_padding';
     left_panel.appendChild(section_padder);
 
+    // create an empty div so index 0 is ignored, because
+    // the game piece colors array starts at index 1:
     let piece_div = document.createElement("div");
-    left_panel.appendChild(piece_div) // create an empty div so index 0 is ignored, game piece colors start at index 1
-    //left_panel.children[0].style.height = "5vh"
+    left_panel.appendChild(piece_div)
 
+    // Create game pieces, set the background color to the current piece value, related to the "colors" array:
+    // Pieces created starts from 1 (red), to the total number of pieces global value
     for (let piece = 1; piece <= pieces; piece++){
         let piece_div = document.createElement("div");
         left_panel.appendChild(piece_div)
         left_panel.children[piece].setAttribute("color", `${colors[piece]}`)
         left_panel.children[piece].style.background = `url('assets/game_pieces/${colors[piece]}.png') center center / contain no-repeat`;
+        // Add in mouse hover information for the user:
         let color_letter_upper = colors[piece][0].toUpperCase()
         left_panel.children[piece].setAttribute('title', `[${color_letter_upper}] Pick up ${colors[piece]} game-piece`);
         left_panel.children[piece].style.backgroundSize = "contain";
     }
 
+    // Initialize the "undo" button area:
     let piece_div1 = document.createElement("div");
     left_panel.appendChild(piece_div1);
     left_panel.children[pieces + 1].setAttribute("color", `cancel`);
     left_panel.children[pieces + 1].innerText = "Undo";
     left_panel.children[pieces + 1].id = 'cancel';
     left_panel.children[pieces + 1].setAttribute('title', `[Escape] Click on any already placed game piece to remove from current turn.`);
-
 }
 
-// Function to randomly generate the winning pieces
+/*
+Function to randomly generate the winning combination
+:params: none
+:returns: none
+*/
 function gen_win_pieces(){
-    // randomly each of the 4 game piece spots on the key-panel:
     for (let choice = 1; choice <= 4; choice++){
-
         // Returns a random integer from 1 to number of game  piece colors in play
         let rand_piece = Math.floor(Math.random() * pieces) + 1;
         winning_combo.push(colors[rand_piece])
     }
-    //console.log(winning_combo);
 }
 
-
-
-// function init_right_panel_elements initialized the right game panel items
-// :params: None
-// :return: none
+/*
+Function init_right_panel_elements initializes the right game panel items
+:params: none
+:returns: none
+*/
 function init_right_panel_elements() {
-    // Column reverse ordering at this time has priority on the CSS:
+    // Column reverse ordering has priority on the CSS, so place items bottom to top as they appear
     let r_panel = document.getElementById('right-game-panel')
 
     // Create the submit button
@@ -364,12 +406,12 @@ function init_right_panel_elements() {
     div1.innerText = "Guess!"
     r_panel.appendChild(div1)
 
-    // Create a container to hold the color buttons on the right panel
+    // Create an outer container to hold the "selected" color user feedback area
     let clr_btn_ctnr = document.createElement("div")
     clr_btn_ctnr.id = "color_btn_container"
     r_panel.appendChild(clr_btn_ctnr)
 
-    // Create a center dotted box area for the "selected" area to give feedback about selected piece
+    // Create an inner center dotted box area for the "selected" area to give feedback about selected piece
     let color_btn_ctnr = document.getElementById("color_btn_container")
     let feed_back_area = document.createElement("div");
     feed_back_area.id = "feed-back-text"
@@ -386,113 +428,122 @@ function init_right_panel_elements() {
 }
 
 
-
-
-
-
-
-// This function only returns the "color" string in the cursor options
-// Helper function for function listen_gameboard()
+/*
+Helper function for function listen_gameboard()
+Function parse_pointer_name only returns the "color" string in the cursor options. Used to extract
+the selected color from the cursor, to potentially place it on the gameboard.
+:params: str_cursor, the cursor information
+:returns: string representing the color currently selected as mouse cursor, empty string otherwise.
+*/
 function parse_pointer_name(str_cursor) {
     let string = ""
     let write = 0
     for (let i = 0; i < str_cursor.length; i++) {
-        if (str_cursor[i] === '/') {
+        if (str_cursor[i] === '/') { // Bypass the first two /'s before writing the string
             write += 1
             continue;
-        } else if (str_cursor[i] === '.') {
+        } else if (str_cursor[i] === '.') { // break out of for loop, reached the file name extension ".png"
             write = false
             break;
-        } else if (write === 2){
+        } else if (write === 2){  // Reached the "color" portion of the input string, start building the output string
             string += str_cursor[i]
         }
     }
     return string
 }
 
-// Function call to check for win/loss conditions, increment turn otherwise:
+/*
+Function call to check for win/loss conditions, increment turn otherwise:
+:params: none
+:returns: none
+*/
 function validate_move() {
-    document.body.style.cursor = ""
+    document.body.style.cursor = ""        // Reset cursor after submission of a guess
     let game_container = document.getElementById('game-container')
+
+    // Sub elements to contain: Left panel, all guess rows, key panel, and Right panel
     let sub_elements = game_container.childNodes;
     let row_combo = []
 
+    // current turn equals the index of the child node of sub elements (points to guess row).
+    // Meaning: guess row number = current turn
     sub_elements[current_turn].childNodes.forEach((child) => {
+        // Below- grab the "color_choice" value of each game piece placement square:
+        // Ignores green arrow area and peg placement area, since these have no attribute "color_choice"
         let tmp_selection = child.getAttribute("color_choice")
         if (tmp_selection != null) {
-            row_combo.push(tmp_selection)
+            row_combo.push(tmp_selection)  // Push the color value into array row_combo
         }
     });
 
+    // Logic below to find perfect matches, and general matches
     let perfect_match = 0
     let general_match = 0
 
     // Make shallow copy of winning_combo using spread operator
     let winning_combo_spread = [...winning_combo]
-    //console.log("row combo before: ", row_combo);
-    //console.log("winning_combo_spread before: ", winning_combo_spread);
 
+    // Iterate the four colors in the row combination, and the winning combination, checking for perfect matches:
     for (let i = 0; i < winning_combo_spread.length; i++ ){
-        if (winning_combo_spread[i] === row_combo[i]) {
-            //console.log("same color and pos detected")
-            perfect_match += 1;
+        if (winning_combo_spread[i] === row_combo[i]) { // Compare the winning combo element to the row combination
+            perfect_match += 1;  // If both arrays match at the current index, means we have a perfect match
 
-            // delete the array reference to the perfect match found, so we dont find it again
-            row_combo.splice(i, 1)
-            winning_combo_spread.splice(i, 1)
-            i -= 1;
+            // Delete the array element of the "perfect match" found, so we dont accidentally find it again:
+            // Delete from both arrays being searched.
+            row_combo.splice(i, 1)            // Delete match found in the current row color combination
+            winning_combo_spread.splice(i, 1) // Delete match found in the winning combination deep copy
+            i -= 1; // Decrement index, since the "next" value now occupies this index # just deleted.
         }
     }
 
-    // Now search for general matches (same color, wrong position)"
+    // Now search for general matches (same color, wrong position)
+    // Iterate through remaining winning combo elements, looking for value matches in all of row  array
     for (let i = 0; i < winning_combo_spread.length; i++ ){
+        // if conditional entered IF we found a winning combination color in row combo:
         if (row_combo.indexOf(winning_combo_spread[i]) != -1) {
-            let pop_index = row_combo.indexOf(winning_combo_spread[i])
+            let pop_index = row_combo.indexOf(winning_combo_spread[i])  // So grab the index to this number in row combo
             general_match += 1
-            row_combo.splice(pop_index, 1)
+            row_combo.splice(pop_index, 1)  // Delete the value in row combo, since it's already been accounted for
         }
     }
 
-    //console.log("Perfect matches found: ", perfect_match)
-    //console.log("General matches found: ", general_match)
-    //console.log("row combo: ", row_combo);
-    //console.log("winning combo: ", winning_combo);
-
-    if (perfect_match == 4) {
+    if (perfect_match == 4) {   // 4 perfect matches means the secret code was solved
         draw_feedback_area(sub_elements, perfect_match, general_match)
         console.log("Win condition found")
         game_state = "won"
-
         show_solution()
         prompt_replay()
-        //select_difficulty()
-    } else {
+    } else {  // Else show peg feedback, increment turn
         draw_feedback_area(sub_elements, perfect_match, general_match)
         increment_turn(sub_elements)
     }
 
 }
 
+/*
+Function draw_feedback_area is called after validate_move(), to give peg feedback for the made move.
+:param sub_elements: array of all game-board children
+:param perfect_matches: Perfect matches found for the guess just submitted.
+:param partial_matches: Partial matches found for the guess just submitted.
+:returns: none
+*/
 function draw_feedback_area(sub_elements, perfect_matches, partial_matches) {
-    //let game_container = document.getElementById('game-container')
-    //let sub_elements = game_container.childNodes;
-
-    // Point to div container containing the four feedback pegs for the current turn:
+    // Point to div container current guess row, where guess row # = the current turn
     let feed_back_area = sub_elements[current_turn].childNodes;
 
-    // Now make the variable point to the four feedback peg elements
-    feed_back_area = feed_back_area[5].childNodes;
+    // Now make the variable point to the four feedback peg sub elements
     // Feedback area is the 5th child node of the row turn
-    //console.log(feed_back_area)
+    feed_back_area = feed_back_area[5].childNodes;
 
+    // Apply background based on # of perfect matches, # of partial matches, or if no matches remaining
     for (let i = 0; i < 4; i++) {
-        if (perfect_matches > 0) {
+        if (perfect_matches > 0) { // Still have perfect matches to display, draw a "black" peg:
             feed_back_area[i].style.background = `url('assets/game_pegs/peg_correct.png') center no-repeat`;
-            perfect_matches -= 1;
-        } else if (partial_matches > 0) {
+            perfect_matches -= 1; // decrement perfect matches, since one was just drawn to feedback area
+        } else if (partial_matches > 0) { // Still have partial matches to display, draw a "white" peg:
             feed_back_area[i].style.background = `url('assets/game_pegs/peg_almost_correct.png') center no-repeat`;
-            partial_matches -= 1;
-        } else {
+            partial_matches -= 1; // decrement partial matches, since one was just drawn to feedback are
+        } else { // No perfect or partial matches remaining, draw an "empty" peg.
             feed_back_area[i].style.background = `url('assets/game_pegs/peg_empty.png') center no-repeat`;
         }
         feed_back_area[i].style.backgroundSize = "contain"
@@ -584,7 +635,7 @@ function listen_gameboard(){
 
                 // Place the selected game piece on the guess row:
                 event.target.style.background = `no-repeat url('assets/game_pieces/${gp_color}.png') center`;
-                event.target.style.backgroundSize = "55%";
+                event.target.style.backgroundSize = "65%";
                 event.target.setAttribute('color_choice', `${gp_color}`)
             } else if (event.target.getAttribute('t_num') == current_turn.toString()
                 && document.body.style.cursor === "") {
@@ -605,7 +656,13 @@ function standby_game() {
     listen_left_panel();
     listen_guess_btn();
     listen_directions_btn();
-    create_bindings();          // Create hotkey bindings
+
+    // Bind the hotkeys only once, rebinding them causes multiple events to be triggered by each rebinding
+    if (first_pass === true) {
+        first_pass = false;
+        create_bindings();          // Create hotkey bindings
+    }
+
     listen_gameboard();         // Listen where the user can place pieces
 }
 
@@ -664,14 +721,28 @@ function listen_directions_btn() {
     });
 }
 
+function unbind_keys(game_container) {
+    //sbmt_btn = document.getElementById('submit_btn')
+    //let feedback_Area = document.getElementById('feed-back-text');
+    let article1 = document.createElement("div");
+    article1.id = "submit_btn";
+    let article2 = document.createElement("div");
+    article2.id = "feed-back-text";
+
+    game_container.appendChild(article1);
+    game_container.appendChild(article2);
+}
 
 
-
-//let colors = ['DeNada', 'red', 'green', 'blue', 'orange', 'violet', 'yellow', 'square', 'diamond', 'asterisk', 'cro
 function create_bindings() {
     // Handle user having a game piece picked up and user hits "escape", then drop the game piece
-    window.addEventListener("keydown", function(event) {
+    window.addEventListener("keypress", function(event) {
+
         let feedback_Area = document.getElementById('feed-back-text');
+        // Handle situations where the game does not currently have
+        // a feedback_Area (directions menu open, difficulty select screen open, win/loss prompt displayed)
+        if (feedback_Area === null) { return; }
+
         if (`${event.key}` == "Escape") { document.body.style.cursor = "" }
         else if (`${event.key}` == "r") {
             document.body.style.cursor = `url('assets/game_pieces/red.png'), pointer`;
@@ -717,8 +788,11 @@ function create_bindings() {
         }
         else if (`${event.key}` == " ") {
             let sbmt_btn = document.getElementById('submit_btn')
-                //console.dir(event.target.getAttribute('color'));  // use this in chrome
-                //console.log(event.target);
+
+                // Handle situations where the game does not currently have
+                // a submit button (ie directions menu open, difficulty select screen open, win/loss prompt displayed)
+                if (sbmt_btn === null) { return; }
+
                 let possible_color = sbmt_btn.getAttribute('color')
                 //let colors = ['DeNada', 'red', 'green', 'blue', 'orange', 'violet', 'yellow', 'square', 'diamond', 'asterisk', 'cross']
                 if (possible_color == 'green' ){
@@ -857,7 +931,7 @@ function handle_close_directions(board, listLength, div_array) {
         }
     });
 }
-function backgroundMS() {
+function background_microservice() {
     fetch('https://nature-image-web-scraper.wl.r.appspot.com/a-nature-image',
         {method: 'GET'})
         .then(response => response.json())
@@ -868,3 +942,9 @@ function backgroundMS() {
     }
 }
 
+// Helper function setBackground applies CSS background styling to the target element
+function setBackground (target, theURL, repeat, size) {
+    target.style.background = `${theURL}`;
+    target.style.backgroundRepeat = `${repeat}`;
+    target.style.backgroundSize = `${size}`;
+}

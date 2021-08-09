@@ -415,6 +415,7 @@ mark {
 /* Define responsive behavior to adapt smaller viewports below: */
 @media (max-width: 900px) {
     body {
+        margin: 1px 4px 1px 1px;;
         padding: 0px 0px;
         font-size: 11px;
     }
@@ -453,11 +454,14 @@ mark {
     }
 
     #game-container{
-        width: 100%;
+        width: 99%;
     }
 }
 
 @media (max-width: 600px) {
+    body {
+        margin: 1px 4px 1px 1px;
+    }
     section[color_difficulty_select_area] > section[difficulty_image] > section,
     section[turn_difficulty_select_area] > section[difficulty_image] > section {
         font-size: 7px;
