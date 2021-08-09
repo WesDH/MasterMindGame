@@ -550,50 +550,61 @@ function draw_feedback_area(sub_elements, perfect_matches, partial_matches) {
     }
 }
 
-//
-// Arg: sub_elements: nodeList of game container. Index of this nodeList equals the respective turn # row
+/*
+Function increment_turn does these tasks:
+1) Increment the current turn
+2) Check if current turn is > turns
+        |--- If yes, end game on a loss condition
+3) Otherwise, move the game arrow to the next turn "guess row"
+:param sub_elements: array of all game-board children
+:returns: none
+*/
 function increment_turn(sub_elements) {
-
     current_turn += 1;
     if (current_turn > turns) {
         console.log("Loss condition detected: Out of turns")
         game_state = "lost"
         show_solution()
         prompt_replay()
-    } else {
-        //console.log("incr ", sub_elements)
+    } else {  // Erase current green arrow background for previous turn row:
         let old_arrow_area = sub_elements[current_turn - 1].childNodes
         old_arrow_area[0].setAttribute("null", "");
         old_arrow_area[0].setAttribute("arrow", "null");
         old_arrow_area[0].style.background = "";
 
+        // Display arrow on row for the current turn:
         let new_arrow_area = sub_elements[current_turn].childNodes
         new_arrow_area[0].setAttribute("arrow", "green");
         new_arrow_area[0].style.background = "url('assets/images/green_arrow.png') center center / contain no-repeat";
     }
 }
 
-// Function to be called on win/loss condition detection. Displays the secret code on the top center.
+/*
+Function to be called on win/loss condition detection. Displays the secret code on the top center.
+:params: none
+:returns: none
+*/
 function show_solution() {
     let key_panel = document.getElementById('key-panel')
-    key_panel.innerHTML = ""
+    key_panel.innerHTML = ""         // Erase current right panel content
     let piece_div = document.createElement("div");
     key_panel.appendChild(piece_div) // create an empty div so index 0 is ignored, game piece colors start at index 1
     key_panel.children[0].innerHTML = "The<br>winning<br>code:"
-
 
     for (let i = 1; i <= 4; i++){
         let div_placeholder = document.createElement("div");
         key_panel.appendChild(div_placeholder).setAttribute("color", `${winning_combo[i-1]}`);
         key_panel.children[i].style.backgroundImage = `url('assets/game_pieces/${winning_combo[i-1]}.png')`;
         key_panel.children[i].style.backgroundSize = "contain";
-
-
     }
 }
 
-// Function to be called on win/loss condition detection. Shows a win/lossprompt on right panel and creates
-// a "new Game" button there as well.
+/*
+Function to be called on win/loss condition detection. Shows a win/loss prompt on right panel and creates
+a "new Game" button there as well.
+:params: none
+:returns: none
+*/
 function prompt_replay() {
     let r_panel = document.getElementById('right-game-panel')
     r_panel.innerHTML = ""
@@ -604,6 +615,7 @@ function prompt_replay() {
     r_panel.appendChild(div1).id = "win_loss_Prompt"
     r_panel.children[0].innerText = `You ${game_state}! Click the button below to return to the difficulty selection screen:`;
 
+    // Create new game button
     let new_game_btn = document.createElement("div")
     r_panel.appendChild(new_game_btn)
     r_panel.children[1].id = "new_game_btn"
@@ -612,23 +624,19 @@ function prompt_replay() {
 
     document.getElementById('new_game_btn').addEventListener("click", () => {select_difficulty()});
 }
-
-// function listen_gameboard adds event listeners to the gameboard elements to listen for user
-// mouse clicks and key presses (where the user can place pieces)
-// :params: None
-// :return: none
+/*
+Function listen_gameboard adds event listeners to the gameboard elements to listen for user
+mouse clicks and key presses (where the user can place pieces)
+:params: none
+:returns: none
+*/
 function listen_gameboard(){
-    //let str_turn = current_turn.toString()
     let all_pieces = document.querySelectorAll('[p_num]')
+    // Listen to game board where user can place game pieces:
     all_pieces.forEach((element) => {
         element.addEventListener('mousedown', function(event) {
-            //console.dir(event.target.getAttribute('color'));  // use this in chrome
             if (event.target.getAttribute('t_num') == current_turn.toString()
                 && document.body.style.cursor !== ""){
-                //console.log(event.target);
-                //console.log("p_num: ",event.target.getAttribute('p_num'));
-                //console.log("t_num: ", event.target.getAttribute('t_num'));
-                //console.log("success");
 
                 // Grab the current pointer color from the cursor info
                 let gp_color = parse_pointer_name(document.body.style.cursor)
@@ -639,7 +647,6 @@ function listen_gameboard(){
                 event.target.setAttribute('color_choice', `${gp_color}`)
             } else if (event.target.getAttribute('t_num') == current_turn.toString()
                 && document.body.style.cursor === "") {
-                //console.log("remove piece request")
                 event.target.style.background = ``;
                 event.target.setAttribute('color_choice', "")
             }
@@ -647,11 +654,12 @@ function listen_gameboard(){
     });
 }
 
-
-// function standby_game adds event listeners to the gameboard elements to listen for user
-// mouse clicks and key presses (on the other elements)
-// :params: None
-// :return: none
+/*
+Function standby_game adds event listeners to the gameboard elements to listen for user
+mouse clicks and key presses (on the other elements)
+:params: none
+:returns: none
+*/
 function standby_game() {
     listen_left_panel();
     listen_guess_btn();
@@ -666,6 +674,12 @@ function standby_game() {
     listen_gameboard();         // Listen where the user can place pieces
 }
 
+/*
+listen_left_panel() adds event listeners to the gameboard elements to listen for user
+mouse clicks and key presses (on the other elements)
+:params: none
+:returns: none
+*/
 function listen_left_panel() {
     //handle user picking up game piece on left panel
     document.getElementById('left-game-panel').addEventListener("click", function(event) {
