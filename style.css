@@ -1,17 +1,22 @@
+/*******************
+Author: Wesley Havens
+Date: August 8th, 2021
+Title: MasterMind Board Game CSS
+Description: This is the primary file to apply styling and layout
+             to the DOM elements inserted by gameLogic.js
+******************/
 body {
     padding: 10px 10px;
     font-family: "Courier", Courier, sans-serif;
     /* Below prevents blue highlighting of game container on mobile devices on tap */
     -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
     -webkit-tap-highlight-color: transparent !important;
-    /* background-image: url("https://images.unsplash.com/photo-1426604966848-d7adac402bff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8bmF0dXJlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80"); */
     background-repeat: no-repeat;
     background-size: 100%;
 }
 
-#game-container{
+#game-container {
     display: flex;
-    /*background: bisque;*/
     flex-direction: column-reverse;
     width: 900px;
     height: 90vh;
@@ -22,7 +27,7 @@ body {
     -webkit-tap-highlight-color: transparent !important;
 }
 
-div[start_select_area]{
+div[start_select_area] {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -47,11 +52,7 @@ div #cancel {
     border: 1px solid #ff8500;
     width: 45%;
     height: 10%;
-    border-bottom-left-radius: 10px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-
+    border-radius: 10px;
 }
 
 section[color_difficulty_select_area],
@@ -77,15 +78,8 @@ section[turn_difficulty_select_area] > div {
     cursor: pointer;
 }
 
-/*section[color_difficulty_select_area] div:hover,*/
-/*section[turn_difficulty_select_area] div:hover {*/
-/*    background-image: url("assets/images/btn_hover.png");*/
-/*    background-repeat: no-repeat;*/
-/*    background-size: 100% 100%;*/
-/*}*/
-
 section[color_difficulty_select_area] > section[difficulty_image],
-section[turn_difficulty_select_area] > section[difficulty_image]{
+section[turn_difficulty_select_area] > section[difficulty_image] {
     height: 35px;
     width: 100%;
     background-image: url("assets/images/gradient.png");
@@ -106,23 +100,15 @@ section[turn_difficulty_select_area] > section[difficulty_image] > section {
     font-size: 17px;
 }
 
-#left-game-panel{
-    /*background: darkgoldenrod;*/
-
+#left-game-panel {
     display: flex;
     flex: 1 1 auto; /* prev 1 0 auto, changed 7/23/21 to fix slight overflow on top of panel */
     flex-direction: column;
-
     background-image: url("assets/images/slate_texture_1.jpg");
-    /*flex-basis: 100%; */
-
     justify-content: start;  /*This and align-items may be reversed due to column flex direction*/
     align-items: center;
-
     height: 100%;
     width: 20%;
-
-
     border: 1px solid black;
     border-bottom-left-radius: 50px;
     border-top-left-radius: 50px;
@@ -133,7 +119,7 @@ section[turn_difficulty_select_area] > section[difficulty_image] > section {
     height: 5%;
 }
 
-div[row_number]{
+div[row_number] {
     display: flex;
     flex: 1 1 auto;
     width: 60%;
@@ -153,15 +139,15 @@ div[row_number]:nth-of-type(even) {
 
 #key-panel > div[color] {
     height: 50%;
-    /*border: 1px solid black;*/
 }
 
-#key-panel{
+#key-panel {
     display: flex;
     flex: 0 0 auto;
     background: url("assets/images/leatherTex_small.jpg");
     color: #d5ffb3;
     flex-direction: row;
+    padding-top: 1px;
     height: 10%;
     width: 60%;
     border-left: 1px solid black;
@@ -171,13 +157,14 @@ div[row_number]:nth-of-type(even) {
     justify-content: center;
     text-align: center;
 }
+
 #key-panel > div:first-child {
     font-size: 15px;
     padding-left: 5px;
     color: #62ff25;
 }
 
-#right-game-panel{
+#right-game-panel {
     display: flex;
     justify-content: space-between;  /*This and align-items may be reversed due to column flex direction*/
     align-items: center;
@@ -210,9 +197,6 @@ div[row_number]:nth-of-type(even) {
 }
 
 #written-directions {
-    /*display: flex;*/
-    /*flex: 1 0 auto;*/
-    /*flex-direction: column;*/
     color: #000000;
     padding-left: 2%;
     padding-right: 2%;
@@ -238,9 +222,9 @@ div[row_number]:nth-of-type(even) {
     margin-top: 8%;
     margin-left: 1%;
     width: 7%;
-    height: 5%;
+    height: 7%;
     background: darkgreen;
-    font-size: 40px;
+    font-size: 38px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -252,14 +236,11 @@ div[row_number]:nth-of-type(even) {
     cursor: pointer;
 }
 
-div[color]{
+div[color] {
     display: flex;
-    /*margin: 20px 10px; FIXTHIS scaling later*/
     margin: 0.4em;
     width: 50%;
     height: 8%;
-    /*background: red;*/
-    /*border: 1px solid black;*/
     background-repeat: no-repeat;
 }
 
@@ -278,7 +259,6 @@ div[arrow] {
 }
 
 div[p_num] {
-/*background-color: rgba(0, 255, 180, 0.06);*/
     border-left: 1px solid black;
     width: 16%;
 }
@@ -300,7 +280,6 @@ div[peg_placement_area] {
     min-height: 40%;
     max-height: 40%;
     border: 1px solid black;
-    /*border-radius: 100%;*/
 }
 
 #color_btn_container {
@@ -312,13 +291,10 @@ div[peg_placement_area] {
     background-image: url("assets/images/slate_texture_1.jpg");
     padding-top: 5%;
     padding-bottom: 5%;
-    /*background: darkgoldenrod;*/
     flex-basis: 100%;
-
-
     width: 75%;
     height: 65%;
-    border: 1px dotted black;
+    border: 1px dotted rgba(0,0,0,0);
 }
 
 #feed-back-text {
@@ -328,13 +304,13 @@ div[peg_placement_area] {
     align-items: center;
     font-size: 12px;
     width: 75%;
-    height: 10%;
+    height: 20%;
     border: 1px dotted black;
 }
 
 mark {
-    color: #ff8500;
     background-color: rgba(40, 40, 40, 0.5);
+    color: #ffae5d;
 }
 
 /* ID submit_btn, but only when element's attribute color = green */
@@ -350,7 +326,6 @@ mark {
 #win_loss_Prompt {
     display: flex;
     text-align: center;
-    /*border: 1px dotted #ff8e9e;*/
     font-size: 26px;
     word-wrap: break-word;
     white-space: pre-wrap;
@@ -375,8 +350,6 @@ mark {
     height: 8%;
 }
 
-
-
 #submit_btn {
     display: flex;
     justify-content: center;
@@ -393,7 +366,6 @@ mark {
 #directions_btn:hover {
     border: 1px solid #62ff25;
 }
-
 
 #directions_btn {
     display: flex;

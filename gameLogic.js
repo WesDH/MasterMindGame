@@ -17,16 +17,20 @@ let winning_combo = [];
 let first_pass = true;
 // End GLOBAL variable definitions
 
-/* Callback function on page load, initialize the difficulty selection menu
- :params: None
- :return: none */
+/*
+Callback function on page load, initialize the difficulty selection menu
+:params: none
+:return: none
+*/
 window.addEventListener('DOMContentLoaded', (event) => {
     select_difficulty()
 });
 
-/* Function to draw the difficulty select screen
- :params: None
- :return: none */
+/*
+Function to draw the difficulty select screen
+:params: none
+:return: none
+*/
 function select_difficulty() {
     background_microservice()       // Call microService to receive a random nature image
 
@@ -54,12 +58,13 @@ function select_difficulty() {
     game_container.appendChild(dif_sect1);
     game_container.children[2].setAttribute("color_difficulty_select_area", "")
     handle_color_select(game_container)
-
 }
 
-/* Handle user clicks on the start select button
- :params: game-container DIV element
- :return: none */
+/*
+Handle user clicks on the start select button
+:params: game-container DIV element
+:return: none
+*/
 function handle_start_select(game_container) {
     // Listen for click on difficulty select buttons and update difficulty setting for TURN:
     game_container.children[0].addEventListener("click", function(event) {
@@ -78,9 +83,11 @@ function handle_start_select(game_container) {
     });
 }
 
-/* Handle user clicks on the turn select area of the difficult select screen
- :params: game-container DIV element
- :return: none */
+/*
+Handle user clicks on the turn select area of the difficult select screen
+:params: game-container DIV element
+:return: none
+*/
 function handle_turn_select(game_container) {
     draw_turn_gradient(game_container)
     draw_turn_btns(game_container)
@@ -102,9 +109,11 @@ function handle_turn_select(game_container) {
     });
 }
 
-/* Function to draw the difficulty gradient and text overlay for the turn select area
- :params: game-container DIV element
- :return: none */
+/*
+Function to draw the difficulty gradient and text overlay for the turn select area
+:params: game-container DIV element
+:return: none
+*/
 function draw_turn_gradient(game_container) {
     // Create the difficulty gradient image:
     let difficulty_img = document.createElement("section");
@@ -125,7 +134,6 @@ function draw_turn_gradient(game_container) {
 
 /*
 Function to draw the 14 turn buttons for difficulty select menu.
-
 :params: game-container DIV element
 :return: none
 */
@@ -670,7 +678,6 @@ function standby_game() {
         first_pass = false;
         create_bindings();          // Create hotkey bindings
     }
-
     listen_gameboard();         // Listen where the user can place pieces
 }
 
@@ -682,30 +689,30 @@ mouse clicks and key presses (on the other elements)
 */
 function listen_left_panel() {
     //handle user picking up game piece on left panel
-    document.getElementById('left-game-panel').addEventListener("click", function(event) {
-        //console.dir(event.target.getAttribute('color'));  // use this in chrome
-        //console.log(event.target);
+    document.getElementById('left-game-panel').addEventListener("click", function(event) {;
         let possible_color = event.target.getAttribute('color')
         let color_feedback = document.getElementById('feed-back-text');
-        //let colors = ['DeNada', 'red', 'green', 'blue', 'orange', 'violet', 'yellow', 'square', 'diamond', 'asterisk', 'cross']
-        if (colors.includes(possible_color)){
+        if (colors.includes(possible_color)) { // Set cursor icon to clicked gamepiece icon
+                                               // and set feedback are to gamepiece icon on Right Panel
             document.body.style.cursor = `url('assets/game_pieces/${possible_color}.png'), pointer`
             color_feedback.style.background = `url('assets/game_pieces/${possible_color}.png') center center / contain no-repeat`;
             color_feedback.style.backgroundSize = "contain";
-        } else if (possible_color == 'cancel') {
+        } else if (possible_color == 'cancel') {// If user clicked cancel
             document.body.style.cursor = "";
             color_feedback.style.background = '';
         }
     });
 }
 
+/*
+listen_guess_btn() listens for clicks on the guess button, and switches between "submit" and "confirm" states
+:params: none
+:returns: none
+*/
 function listen_guess_btn() {
     // Handle mouse clicks on guess button:
     document.getElementById('submit_btn').addEventListener("click", function(event) {
-        //console.dir(event.target.getAttribute('color'));  // use this in chrome
-        //console.log(event.target);
         let possible_color = event.target.getAttribute('color')
-        //let colors = ['DeNada', 'red', 'green', 'blue', 'orange', 'violet', 'yellow', 'square', 'diamond', 'asterisk', 'cross']
         if (possible_color == 'green' ){
             event.target.setAttribute('color', 'red');
             event.target.setAttribute('title', '[Spacebar] Confirm');
@@ -713,12 +720,9 @@ function listen_guess_btn() {
             event.target.style.background = "#BA0520FF";
             event.target.innerText = "Confirm"
         } else if (possible_color == 'red' ){
-
             document.getElementById('feed-back-text').style.background = '';  // Reset "selected" area to empty
-
             // Function call to check for win/loss conditions, increment turn otherwise:
             validate_move()
-
             event.target.setAttribute('color', 'green');
             event.target.setAttribute('title', '[Spacebar] Submit your guess!');
             //event.target.style.color = '#BA0520FF';
@@ -728,6 +732,11 @@ function listen_guess_btn() {
     });
 }
 
+/*
+listen_directions_btn() listens for clicks on the directions button
+:params: none
+:returns: none
+*/
 function listen_directions_btn() {
     //handle mouse clicks on direction area
     document.getElementById('directions_btn').addEventListener("click", function (event) {
@@ -735,29 +744,26 @@ function listen_directions_btn() {
     });
 }
 
-function unbind_keys(game_container) {
-    //sbmt_btn = document.getElementById('submit_btn')
-    //let feedback_Area = document.getElementById('feed-back-text');
-    let article1 = document.createElement("div");
-    article1.id = "submit_btn";
-    let article2 = document.createElement("div");
-    article2.id = "feed-back-text";
-
-    game_container.appendChild(article1);
-    game_container.appendChild(article2);
-}
-
-
+/*
+create_bindings() creates hotkey binding for game pieces and submit button
+:params: none
+:returns: none
+*/
 function create_bindings() {
     // Handle user having a game piece picked up and user hits "escape", then drop the game piece
     window.addEventListener("keypress", function(event) {
 
         let feedback_Area = document.getElementById('feed-back-text');
+
         // Handle situations where the game does not currently have
         // a feedback_Area (directions menu open, difficulty select screen open, win/loss prompt displayed)
         if (feedback_Area === null) { return; }
 
-        if (`${event.key}` == "Escape") { document.body.style.cursor = "" }
+        // Switch like statement to handle key presses to select game pieces and submit button
+        if (`${event.key}` == "Escape" || `${event.key}` == "Esc"){
+            document.body.style.cursor = ""
+            feedback_Area.style.background = ``;
+        }
         else if (`${event.key}` == "r") {
             document.body.style.cursor = `url('assets/game_pieces/red.png'), pointer`;
             feedback_Area.style.background = `url('assets/game_pieces/red.png') center center / contain no-repeat`;
@@ -800,7 +806,7 @@ function create_bindings() {
             document.body.style.cursor = `url('assets/game_pieces/cross.png'), pointer`;
             feedback_Area.style.background = `url('assets/game_pieces/cross.png') center center / contain no-repeat`;
         }
-        else if (`${event.key}` == " ") {
+        else if (`${event.key}` == " ") { // Space bar hotkey, same functionality below as listen_guess_btn()
             let sbmt_btn = document.getElementById('submit_btn')
 
                 // Handle situations where the game does not currently have
@@ -808,35 +814,30 @@ function create_bindings() {
                 if (sbmt_btn === null) { return; }
 
                 let possible_color = sbmt_btn.getAttribute('color')
-                //let colors = ['DeNada', 'red', 'green', 'blue', 'orange', 'violet', 'yellow', 'square', 'diamond', 'asterisk', 'cross']
                 if (possible_color == 'green' ){
                     sbmt_btn.setAttribute('color', 'red');
                     sbmt_btn.setAttribute('title', '[Spacebar] Confirm');
-                    //event.target.style.color = '#BA0520FF';
                     sbmt_btn.style.background = "#BA0520FF";
                     sbmt_btn.innerText = "Confirm"
                 } else if (possible_color == 'red' ){
-
                     document.getElementById('feed-back-text').style.background = '';  // Reset "selected" area to empty
-
                     // Function call to check for win/loss conditions, increment turn otherwise:
                     validate_move()
-
                     sbmt_btn.setAttribute('color', 'green');
                     sbmt_btn.setAttribute('title', '[Spacebar] Submit your guess!');
-                    //event.target.style.color = '#BA0520FF';
                     sbmt_btn.style.background = "darkgreen";
                     sbmt_btn.innerText = "Guess!"
                 }
-
         }
     }, true);
 }
 
-// function show_directions draws the game directions menu, and restores the game from it's saved state
-// when the directions menu is closed.
-// :params: None
-// :return: none
+/*
+Function show_directions draws the game directions menu, and restores the game from it's saved state
+when the directions menu is closed.
+:params: none
+:returns: none
+*/
 function show_directions() {
     let gameBoard = document.getElementById('game-container')
     let nodeListLength = gameBoard.children.length
@@ -850,13 +851,14 @@ function show_directions() {
     create_hidden(gameBoard);  // Handle if user clicks on a game-pice with directions open
 
     handle_close_directions(gameBoard, nodeListLength, divArray)
-
 }
 
-// function save_game_state will save the current game board, so that the directions menu
-// can be displayed, and the game board restored later from it's saved state.
-// :param board: DOM reference to the game-container DIV element
-// :return: divArray_temp (type array), an array of the saved HTML elements of the current game state
+/*
+Function save_game_state will save the current game board, so that the directions menu
+can be displayed, and the game board restored later from it's saved state.
+:param board: DOM reference to the game-container DIV element
+:return: divArray_temp (type array), an array of the saved HTML elements of the current game state
+*/
 function save_game_state(board, nodeLength) {
     let divArray_temp = ['DeNada']
     // Save the center game board and right panel into an array of DIVs
@@ -873,8 +875,12 @@ function save_game_state(board, nodeLength) {
     return divArray_temp
 }
 
+/*
+Function initialize_directions will draw the game directions screen
+:param board: DOM reference to the game-container DIV element
+:return: none
+*/
 function initialize_directions(board) {
-
     let instructDIV = document.createElement("div")
     board.appendChild(instructDIV)
     board.children[1].id = "instructions-panel"
@@ -892,9 +898,9 @@ function initialize_directions(board) {
         "<p>4) You will receive feedback from the CPU. A black dot means you guessed a correct color AND position. " +
         "A white dot means you guessed a correct color, but it's in the wrong position. An empty dot means that one of " +
         "your colors you guessed is not in the secret code." +
-        "<p>5) If you guessed the 4 correct colors and 4 correct positions before running out of turns, you win! If " +
+        "<p>5) If you guessed the 4 correct colors and 4 correct positions before running out of turns, you win. If " +
         "you run out of turns to guess, you lose." +
-        "<p>6) Choose you difficulty level and play again!" +
+        "<p>6) Choose your difficulty level to play again!" +
         "<br><br><b><p>Gamepiece Selection Hotkeys:</p></b>" +
         "<div id=\"hotkey_directions\">" +
         "<p>&#8226;<b>R</b> - Red</p>" +
@@ -914,7 +920,10 @@ function initialize_directions(board) {
         "<a href='https://en.wikipedia.org/wiki/Mastermind_(board_game)' target='_new'" +
         " title='Mastermind Wikipedia Page'>THIS</a> Wikepedia link.</p>" +
         "<p>&#8226; Visual learner? Click <a href='https://www.youtube.com/watch?v=dMHxyulGrEk' target='_new' " +
-        "title='Youtube link'>HERE</a> to watch an instructional video on Youtube.</p>"
+        "title='Youtube link'>HERE</a> to watch an instructional video on Youtube.</p>" +
+        "<p>&#8226; View game source files on GitHub <a href='https://github.com/WesDH/MasterMindGame' target='_new' " +
+        "title='GitHub'>HERE</a>.</p>";
+
     let close = document.createElement("div")
     board.children[1].appendChild(close)
     board.children[1].children[1].id = "close-directions"
@@ -932,6 +941,13 @@ function create_hidden(board) {
     board.children[1].appendChild(feedbackHidden)
 }
 
+/*
+Function handle_close_directions will handle the user clicking on the "x" button to close directions
+:param board: DOM reference to the game-container DIV element
+:param listLength: The length the game-container child elements
+:param div_array: The saved game board consisting of DIV elements
+:return: none
+*/
 function handle_close_directions(board, listLength, div_array) {
     // Await user to click on the "X" to close directions
     document.getElementById('close-directions').addEventListener("click", function(event) {
@@ -945,6 +961,13 @@ function handle_close_directions(board, listLength, div_array) {
         }
     });
 }
+
+/*
+Function background_microservice will call the micro-service "random nature image",
+then use a callback function to apply the nature image as background
+:params" none
+:return: none
+*/
 function background_microservice() {
     fetch('https://nature-image-web-scraper.wl.r.appspot.com/a-nature-image',
         {method: 'GET'})
