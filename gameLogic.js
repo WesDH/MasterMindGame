@@ -167,7 +167,7 @@ function handle_color_select(game_container) {
     game_container.children[2].addEventListener("click", function(event) {
         if (event.target.tagName === 'DIV') {
             // "Deselect" all buttons:
-            for(let i = 1; i <= 7; i++) {
+            for(let i = 2; i <= 8; i++) {
                 game_container.children[2].children[i].style.background = "url('assets/images/btn.png')";
                 game_container.children[2].children[i].style.backgroundRepeat = "no-repeat";
                 game_container.children[2].children[i].style.backgroundSize = "100% 100%";
@@ -189,21 +189,29 @@ Function to draw the difficulty gradient and text overlay for the COLOR select a
 :returns: none
 */
 function draw_color_gradient(game_container) {
+    // Create title
+    // Create the color gradient area for easy to hard.
+    let title_text = document.createElement("section");
+    game_container.children[2].appendChild(title_text);
+    game_container.children[2].children[0].setAttribute("title_text", "")
+    game_container.children[2].children[0].innerHTML = "Welcome to<br><b>Mastermind Board Game</b>" +
+        "<br>To begin, select # of color choices and # of turns";
+
     // Create the color gradient area for easy to hard.
     let difficulty_img = document.createElement("section");
     game_container.children[2].appendChild(difficulty_img);
-    game_container.children[2].children[0].setAttribute("difficulty_image", "")
+    game_container.children[2].children[1].setAttribute("difficulty_image", "")
 
     // Create text overlay for the difficulty gradient image:
     let easy = document.createElement("section");
     let name = document.createElement("section");
     let hard = document.createElement("section");
-    game_container.children[2].children[0].appendChild(easy)
-    game_container.children[2].children[0].appendChild(name)
-    game_container.children[2].children[0].appendChild(hard)
-    game_container.children[2].children[0].children[0].innerText = "Easier";
-    game_container.children[2].children[0].children[1].innerHTML = "(Color Choices)";
-    game_container.children[2].children[0].children[2].innerText = "More Difficult";
+    game_container.children[2].children[1].appendChild(easy)
+    game_container.children[2].children[1].appendChild(name)
+    game_container.children[2].children[1].appendChild(hard)
+    game_container.children[2].children[1].children[0].innerText = "Easier";
+    game_container.children[2].children[1].children[1].innerHTML = "(Color Choices)";
+    game_container.children[2].children[1].children[2].innerText = "More Difficult";
 }
 
 /*
@@ -381,7 +389,7 @@ function draw_piece_choices() {
     left_panel.children[pieces + 1].setAttribute("color", `cancel`);
     left_panel.children[pieces + 1].innerText = "Undo";
     left_panel.children[pieces + 1].id = 'cancel';
-    left_panel.children[pieces + 1].setAttribute('title', `[Escape] Click on any already placed game piece to remove from current turn.`);
+    left_panel.children[pieces + 1].setAttribute('title', `[~] Click on any already placed game piece to remove from current turn.`);
 }
 
 /*
@@ -642,7 +650,7 @@ function listen_gameboard(){
     let all_pieces = document.querySelectorAll('[p_num]')
     // Listen to game board where user can place game pieces:
     all_pieces.forEach((element) => {
-        element.addEventListener('mousedown', function(event) {
+        element.addEventListener('click', function(event) {
             if (event.target.getAttribute('t_num') == current_turn.toString()
                 && document.body.style.cursor !== ""){
 
@@ -750,7 +758,7 @@ create_bindings() creates hotkey binding for game pieces and submit button
 :returns: none
 */
 function create_bindings() {
-    // Handle user having a game piece picked up and user hits "escape", then drop the game piece
+    // Handle user having a game piece picked up and user hits "~", then drop the game piece
     window.addEventListener("keypress", function(event) {
 
         let feedback_Area = document.getElementById('feed-back-text');
@@ -760,7 +768,7 @@ function create_bindings() {
         if (feedback_Area === null) { return; }
 
         // Switch like statement to handle key presses to select game pieces and submit button
-        if (`${event.key}` == "Escape" || `${event.key}` == "Esc"){
+        if (`${event.key}` === "`"){
             document.body.style.cursor = ""
             feedback_Area.style.background = ``;
         }
@@ -913,7 +921,7 @@ function initialize_directions(board) {
         "<p>&#8226;<b>D</b> - Diamond</p>" +
         "<p>&#8226;<b>A</b> - Asterisk</p>" +
         "<p>&#8226;<b>C</b> - Cross</p>" +
-        "<p>&#8226;<b>Escape</b> - Deselect</p>" +
+        "<p>&#8226;<b>Tilde ~</b> - Deselect</p>" +
         "<p>&#8226;<b>Spacebar</b> - Submit Guess/Confirm</p>" +
         "</div>" +
         "<br><p>&#8226; Want to learn more? Read about Mastermind with " +
