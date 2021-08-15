@@ -931,7 +931,8 @@ function initialize_directions(board) {
         "title='Youtube link'>HERE</a> to watch an instructional video on Youtube.</p>" +
         "<p>&#8226; View game source files on GitHub <a href='https://github.com/WesDH/MasterMindGame' target='_new' " +
         "title='GitHub'>HERE</a>.</p>" +
-        "<p>&#8226; Credit to my Summer 2021 CS361 team member Hae Ji Park, for which their micro-service returns a random nature themed image after an HTTP request is sent, " +
+        "<p>&#8226; Credit to my Summer 2021 CS361 team member Hae Ji Park, for which their micro-service returns a" +
+        " random nature themed image after an HTTP request is sent, " +
         "which is then applied as the current game's background image.</p>";
 
     let close = document.createElement("div")
@@ -953,6 +954,7 @@ function create_hidden(board) {
 
 /*
 Function handle_close_directions will handle the user clicking on the "x" button to close directions
+
 :param board: DOM reference to the game-container DIV element
 :param listLength: The length the game-container child elements
 :param div_array: The saved game board consisting of DIV elements
@@ -995,3 +997,4 @@ function setBackground (target, theURL, repeat, size) {
     target.style.backgroundRepeat = `${repeat}`;
     target.style.backgroundSize = `${size}`;
 }
+//EOF
