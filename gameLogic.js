@@ -930,7 +930,9 @@ function initialize_directions(board) {
         "<p>&#8226; Visual learner? Click <a href='https://www.youtube.com/watch?v=dMHxyulGrEk' target='_new' " +
         "title='Youtube link'>HERE</a> to watch an instructional video on Youtube.</p>" +
         "<p>&#8226; View game source files on GitHub <a href='https://github.com/WesDH/MasterMindGame' target='_new' " +
-        "title='GitHub'>HERE</a>.</p>";
+        "title='GitHub'>HERE</a>.</p>" +
+        "<p>&#8226; Credit to my Summer 2021 CS361 team member Hae Ji Park, for which their micro-service returns a random nature themed image after an HTTP request is sent, " +
+        "which is then applied as the current game's background image.</p>";
 
     let close = document.createElement("div")
     board.children[1].appendChild(close)
