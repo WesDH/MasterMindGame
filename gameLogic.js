@@ -230,9 +230,9 @@ function draw_color_btns(game_container) {
 
     // Default set pieces difficulty to 10 and have this button selected:
     pieces = 10
-    game_container.children[2].children[7].style.background = "url('assets/images/btn_select.png')";
-    game_container.children[2].children[7].style.backgroundRepeat = "no-repeat";
-    game_container.children[2].children[7].style.backgroundSize = "100% 100%";
+    game_container.children[2].children[8].style.background = "url('assets/images/btn_select.png')";
+    game_container.children[2].children[8].style.backgroundRepeat = "no-repeat";
+    game_container.children[2].children[8].style.backgroundSize = "100% 100%";
 }
 
 /*
