@@ -5,6 +5,15 @@ Title: MasterMind Board Game CSS
 Description: This is the primary file to apply styling and layout
              to the DOM elements inserted by gameLogic.js
 ******************/
+
+/* Fixed background */
+html {
+    width: 100vw;
+    min-height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(40deg, rgba(253, 158, 98, 0.8), rgba(255,0,0,0) 50%);
+}
+
 body {
     padding: 10px 10px;
     font-family: "Courier", Courier, sans-serif;
