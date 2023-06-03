@@ -1,4 +1,4 @@
-MasterMind, a puzzle solving game in development for summer 2021.
+MasterMind, a puzzle solving game.
 
 Instructions: There are 4 randomly chosen colors on the top row (hidden).
 1) The other 10 rows are the amount of turns you have to correctly guess the colors and their correct position.
